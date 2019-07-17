@@ -47,7 +47,7 @@ public class ViewNoteActivityViewModel extends AndroidViewModel {
 
         @Override
         protected Void doInBackground(NotesVo... notesVos) {
-            notesDao.updateNote(notesVos[0]);
+            notesDao.updateNote(notesVos[0].getNoteID(),notesVos[0].getNoteTitle(),notesVos[0].getNoteText(),notesVos[0].getNoteTime(),notesVos[0].getNoteImage());
             return null;
         }
     }

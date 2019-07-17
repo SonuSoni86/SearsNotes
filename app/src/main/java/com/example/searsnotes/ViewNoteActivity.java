@@ -54,8 +54,6 @@ public class ViewNoteActivity extends AppCompatActivity {
         }
         viewModel = ViewModelProviders.of(this).get(ViewNoteActivityViewModel.class);
         note = viewModel.getNote(noteID);
-        if(note==null){
-            return;}
         note.observe(this, new Observer<NotesVo>() {
             @Override
             public void onChanged(NotesVo notesVo) {
@@ -92,13 +90,14 @@ public class ViewNoteActivity extends AppCompatActivity {
         if (requestCode == IntentRequestCodes.UPDATE_NOTE_ACTIVITY_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Bundle dataBundle = data.getBundleExtra("note_data");
-                NotesVo note = new NotesVo();
-                note.setNoteTitle(dataBundle.getString("title"));
-                note.setNoteText(dataBundle.getString("text"));
-                note.setNoteImage(dataBundle.getString("uri"));
-                note.setNoteTime(dataBundle.getString("time"));
-                viewModel.updateNote(note);
-                Toast.makeText(getApplicationContext(), "Edited Note saved", Toast.LENGTH_LONG).show();
+                NotesVo notesVo = new NotesVo();
+                notesVo.setNoteTitle(dataBundle.getString("title"));
+                notesVo.setNoteText(dataBundle.getString("text"));
+                notesVo.setNoteImage(dataBundle.getString("uri"));
+                notesVo.setNoteTime(dataBundle.getString("time"));
+                viewModel.updateNote(notesVo);
+                Toast.makeText(getApplicationContext(), notesVo.getNoteTitle(), Toast.LENGTH_LONG).show();
+                finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Edited Note Not saved", Toast.LENGTH_LONG).show();
             }
@@ -115,7 +114,7 @@ public class ViewNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-                viewModel.getNote(noteID).removeObservers(ViewNoteActivity.this);
+                note.removeObservers(ViewNoteActivity.this);
                 viewModel.deleteNote(noteObject);
                 finish();
             }
