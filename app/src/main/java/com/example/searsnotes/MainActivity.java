@@ -44,10 +44,8 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<NotesVo> notesVos) {
                 if(notesVos.size()==0){
                     Toast.makeText(getApplicationContext(),"No Notes Available",Toast.LENGTH_LONG).show();
-                }else
-                {
-                   adapter.setNotelist(notesVos);
                 }
+                adapter.setNotelist(notesVos);
             }
         });
 
