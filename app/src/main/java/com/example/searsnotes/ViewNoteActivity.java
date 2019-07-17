@@ -48,7 +48,7 @@ public class ViewNoteActivity extends AppCompatActivity {
         noteText = findViewById(R.id.note_text);
         noteImage = findViewById(R.id.note_image);
         noteID = getIntent().getIntExtra("id", 0);
-        if (noteID == 0 ) {
+        if (noteID == 0) {
             Toast.makeText(this, "Data Not found", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -57,7 +57,7 @@ public class ViewNoteActivity extends AppCompatActivity {
         note.observe(this, new Observer<NotesVo>() {
             @Override
             public void onChanged(NotesVo notesVo) {
-                noteObject=notesVo;
+                noteObject = notesVo;
                 noteTitle.setText(notesVo.getNoteTitle());
                 noteText.setText(notesVo.getNoteText());
                 if (!notesVo.getNoteImage().equals("default")) {
