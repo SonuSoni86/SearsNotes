@@ -81,6 +81,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
     public void saveBtnClicked(View view) {
         Bundle noteDataBundle = new Bundle();
+        noteDataBundle.putInt("id",noteID);
         noteDataBundle.putString("title",noteTitle.getText().toString().trim());
         noteDataBundle.putString("text",noteText.getText().toString().trim());
         if(imageUri==null){

@@ -91,13 +91,13 @@ public class ViewNoteActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Bundle dataBundle = data.getBundleExtra("note_data");
                 NotesVo notesVo = new NotesVo();
+                notesVo.setNoteID(dataBundle.getInt("id"));
                 notesVo.setNoteTitle(dataBundle.getString("title"));
                 notesVo.setNoteText(dataBundle.getString("text"));
                 notesVo.setNoteImage(dataBundle.getString("uri"));
                 notesVo.setNoteTime(dataBundle.getString("time"));
                 viewModel.updateNote(notesVo);
                 Toast.makeText(getApplicationContext(), notesVo.getNoteTitle(), Toast.LENGTH_LONG).show();
-                finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Edited Note Not saved", Toast.LENGTH_LONG).show();
             }

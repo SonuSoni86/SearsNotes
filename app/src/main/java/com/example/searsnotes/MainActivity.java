@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         viewOfNotes.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NoteListAdapter(this);
         viewOfNotes.setAdapter(adapter);
+        viewOfNotes.setHasFixedSize(true);
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mainActivityViewModel.getListOfNotes().observe(this, new Observer<List<NotesVo>>() {
             @Override
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setNotelist(notesVos);
             }
         });
+
 
 
     }
