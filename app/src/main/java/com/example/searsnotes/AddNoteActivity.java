@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+
 public class AddNoteActivity extends AppCompatActivity {
 
     private EditText noteTitle,noteText;
@@ -73,7 +75,7 @@ public class AddNoteActivity extends AppCompatActivity {
     public void discardBtnClicked(View view) { finish();}
 
     public void picImageClicked(View view) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent,"Pic an Image"),IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
     }
@@ -116,6 +118,9 @@ public class AddNoteActivity extends AppCompatActivity {
                     noteImage.setImageBitmap(tempBmp);
                 picImage.setVisibility(View.GONE);
                 captureImage.setVisibility(View.GONE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    this.getContentResolver().takePersistableUriPermission(tempUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
                 imageUri = tempUri.toString();
             }
             break;
@@ -143,7 +148,9 @@ public class AddNoteActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode==1)
         {
-            if(grantResults[0]==PackageManager.PERMISSION_GRANTED && grantResults[1]==PackageManager.PERMISSION_GRANTED && grantResults[2]==PackageManager.PERMISSION_GRANTED)
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED && grantResults[1]==PackageManager.PERMISSION_GRANTED &&
+                    grantResults[2]==PackageManager.PERMISSION_GRANTED
+                    && grantResults[3]==PackageManager.PERMISSION_GRANTED)
             {
                 Toast.makeText(getApplicationContext(),"Permission granted",Toast.LENGTH_SHORT).show();
             }

@@ -54,8 +54,16 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
            if(note.getNoteImage().equals("default")){
                holder.noteImage.setImageResource(R.drawable.note_thumbnail);
            }else{
-               Picasso.with(context).load(Uri.parse(note.getNoteImage())).into(holder.noteImage);
-               //holder.noteImage.setImageURI(Uri.parse(note.getNoteImage()));
+               Picasso.Builder builder = new Picasso.Builder(context);
+               builder.listener(new Picasso.Listener()
+               {
+                   @Override
+                   public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception)
+                   {
+                       exception.printStackTrace();
+                   }
+               });
+               builder.build().load(Uri.parse(note.getNoteImage())).into(holder.noteImage);
            }
 
            holder.getView().setOnClickListener(new View.OnClickListener() {
