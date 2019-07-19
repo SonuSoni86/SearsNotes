@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView viewOfNotes;
     private List<NotesVo> notesVoList = new ArrayList<>();
     private NoteListAdapter adapter;
+    public int numberOfNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"No Notes Available",Toast.LENGTH_LONG).show();
                 }
                 adapter.setNotelist(notesVos);
+                numberOfNotes=notesVos.size();
+
             }
         });
 
