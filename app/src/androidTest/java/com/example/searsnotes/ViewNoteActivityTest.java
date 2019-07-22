@@ -33,9 +33,7 @@ public class ViewNoteActivityTest {
 
     @Test
     public void checkViewNote(){
-        Intent intent = new Intent(activityTestRule.getActivity(), ViewNoteActivity.class);
-        intent.putExtra("id",0);
-        activityTestRule.launchActivity(intent);
+
     }
 
 
@@ -47,6 +45,9 @@ public class ViewNoteActivityTest {
 
     @Before
     public void setUp() throws Exception {
+        Intent intent = new Intent(activityTestRule.getActivity(), ViewNoteActivity.class);
+        intent.putExtra("id",0);
+        activityTestRule.launchActivity(intent);
 
     }
 
