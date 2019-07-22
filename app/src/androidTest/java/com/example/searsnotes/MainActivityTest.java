@@ -36,8 +36,6 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class);
     @Rule
     public IntentsTestRule<AddNoteActivity> intentsTestRule = new IntentsTestRule<AddNoteActivity>(AddNoteActivity.class);
-    @Rule
-    public IntentsTestRule<ViewNoteActivity> intentTestRule  = new IntentsTestRule<>(ViewNoteActivity.class);
 
     private String title = "Title123";
     private String text = "Note Text123";
@@ -53,11 +51,6 @@ public class MainActivityTest {
         Espresso.onView(withId(R.id.save_btn)).perform(click());
         Espresso.onView(withId(R.id.notes_view)).check(matches(isDisplayed()));
 
-    }
-    @Test
-    public void checkViewNote(){
-        Espresso.onView(withId(R.id.notes_view)).perform(click());
-        intended(hasComponent(ViewNoteActivity.class.getName()));
     }
 
 
