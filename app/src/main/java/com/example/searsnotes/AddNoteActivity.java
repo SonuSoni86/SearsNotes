@@ -107,6 +107,7 @@ public class AddNoteActivity extends AppCompatActivity {
                 break;
 
             case IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST:
+                if(resultCode==RESULT_OK)
             {
                 Uri tempUri = data.getData();
                 Bitmap tempBmp=null;
@@ -149,8 +150,7 @@ public class AddNoteActivity extends AppCompatActivity {
         if(requestCode==1)
         {
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED && grantResults[1]==PackageManager.PERMISSION_GRANTED &&
-                    grantResults[2]==PackageManager.PERMISSION_GRANTED
-                    && grantResults[3]==PackageManager.PERMISSION_GRANTED)
+                    grantResults[2]==PackageManager.PERMISSION_GRANTED)
             {
                 Toast.makeText(getApplicationContext(),"Permission granted",Toast.LENGTH_SHORT).show();
             }
