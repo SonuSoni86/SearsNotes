@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 <data class="ActivityViewNoteBinding">
+    <import type="com.example.searsnotes.dataBinding.PictureBindingAdapters" />
     <variable
         name="noteObject"
         type="com.example.searsnotes.model.NotesVo" />
@@ -55,7 +56,8 @@
                     android:layout_below="@id/note_text"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="50dp"
-                    android:src="@drawable/note_thumbnail" />
+                    app:imageResource="@{noteObject.noteImage}"
+                    />
 
 
 

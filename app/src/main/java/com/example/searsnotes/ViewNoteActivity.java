@@ -57,10 +57,6 @@ public class ViewNoteActivity extends AppCompatActivity {
             public void onChanged(NotesVo notesVo) {
                 noteObject = notesVo;
                 mBinding.setNoteObject(noteObject);
-                if (!notesVo.getNoteImage().equals("default")) {
-                    Picasso.with(ViewNoteActivity.this).load(Uri.parse(notesVo.getNoteImage())).into(noteImage);
-                    //holder.noteImage.setImageURI(Uri.parse(note.getNoteImage()));
-                }
             }
         });
 
