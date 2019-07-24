@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
-import com.example.searsnotes.Model.NotesVo;
+import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.View.NoteListAdapter;
 import com.example.searsnotes.ViewModels.MainActivityViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

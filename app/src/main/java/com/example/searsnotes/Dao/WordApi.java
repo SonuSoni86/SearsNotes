@@ -1,6 +1,6 @@
 package com.example.searsnotes.Dao;
 
-import com.example.searsnotes.Model.DictionaryMeaning;
+import com.example.searsnotes.model.DictionaryMeaning;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

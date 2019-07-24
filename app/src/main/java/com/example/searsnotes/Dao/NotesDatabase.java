@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.searsnotes.Model.NotesVo;
+import com.example.searsnotes.model.NotesVo;
 
 @Database(entities = NotesVo.class,version = 1,exportSchema = false)
 public abstract class NotesDatabase extends RoomDatabase {

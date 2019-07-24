@@ -1,4 +1,4 @@
-package com.example.searsnotes.Model;
+package com.example.searsnotes.model;
 
 import com.google.gson.annotations.SerializedName;
 

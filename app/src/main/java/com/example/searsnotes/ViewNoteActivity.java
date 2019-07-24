@@ -3,32 +3,29 @@ package com.example.searsnotes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
-import com.example.searsnotes.Model.NotesVo;
+import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.ViewModels.ViewNoteActivityViewModel;
+import com.example.searsnotes.databinding.ActivityViewNoteBinding;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 
 public class ViewNoteActivity extends AppCompatActivity {
 
@@ -39,16 +36,17 @@ public class ViewNoteActivity extends AppCompatActivity {
     private LiveData<NotesVo> note;
     private NotesVo noteObject;
     private MainActivity mainActivityInstance;
+    private ActivityViewNoteBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_note);
+        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_view_note);
         noteTitle = findViewById(R.id.note_title);
         noteText = findViewById(R.id.note_text);
         noteImage = findViewById(R.id.note_image);
-        noteID = getIntent().getIntExtra("id", 0);
-        if (noteID == 0) {
+        noteID = getIntent().getIntExtra("id", -1);
+        if (noteID == -1) {
             Toast.makeText(this, "Data Not found", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -58,8 +56,7 @@ public class ViewNoteActivity extends AppCompatActivity {
             @Override
             public void onChanged(NotesVo notesVo) {
                 noteObject = notesVo;
-                noteTitle.setText(notesVo.getNoteTitle());
-                noteText.setText(notesVo.getNoteText());
+                mBinding.setNoteObject(noteObject);
                 if (!notesVo.getNoteImage().equals("default")) {
                     Picasso.with(ViewNoteActivity.this).load(Uri.parse(notesVo.getNoteImage())).into(noteImage);
                     //holder.noteImage.setImageURI(Uri.parse(note.getNoteImage()));

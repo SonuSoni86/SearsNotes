@@ -26,10 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
-import com.example.searsnotes.Model.NotesVo;
+import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.ViewModels.EditNoteActivityViewModel;
-import com.example.searsnotes.ViewModels.ViewNoteActivityViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;

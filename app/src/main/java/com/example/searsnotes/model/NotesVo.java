@@ -1,11 +1,9 @@
-package com.example.searsnotes.Model;
+package com.example.searsnotes.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.util.Date;
 
 @Entity(tableName = "Notes_Table")
 public class NotesVo {

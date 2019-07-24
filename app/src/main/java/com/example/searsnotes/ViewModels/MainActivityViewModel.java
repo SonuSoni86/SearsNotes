@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.searsnotes.Dao.NotesDao;
 import com.example.searsnotes.Dao.NotesDatabase;
-import com.example.searsnotes.Model.NotesVo;
+import com.example.searsnotes.model.NotesVo;
 
 import java.util.List;
 

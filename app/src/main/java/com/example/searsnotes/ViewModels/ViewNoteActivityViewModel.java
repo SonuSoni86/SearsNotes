@@ -2,7 +2,6 @@ package com.example.searsnotes.ViewModels;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,7 +10,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.searsnotes.Dao.NotesDao;
 import com.example.searsnotes.Dao.NotesDatabase;
-import com.example.searsnotes.Model.NotesVo;
+import com.example.searsnotes.model.NotesVo;
 
 public class ViewNoteActivityViewModel extends AndroidViewModel {
 

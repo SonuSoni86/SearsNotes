@@ -1,23 +1,17 @@
 package com.example.searsnotes.Utilities;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-
 import com.example.searsnotes.Dao.RetrofitClientInstance;
 import com.example.searsnotes.Dao.WordApi;
-import com.example.searsnotes.Model.Definitions;
-import com.example.searsnotes.Model.DictionaryMeaning;
+import com.example.searsnotes.model.Definitions;
+import com.example.searsnotes.model.DictionaryMeaning;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
