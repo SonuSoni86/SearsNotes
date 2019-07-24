@@ -2,6 +2,7 @@ package com.example.searsnotes;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
+import com.example.searsnotes.databinding.ActivityMainBinding;
+import com.example.searsnotes.databinding.ActivityViewNoteBinding;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.View.NoteListAdapter;
 import com.example.searsnotes.ViewModels.MainActivityViewModel;
@@ -24,22 +27,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private MainActivityViewModel mainActivityViewModel;
-    private FloatingActionButton addNoteBtn;
-    private RecyclerView viewOfNotes;
     private List<NotesVo> notesVoList = new ArrayList<>();
     private NoteListAdapter adapter;
-    public int numberOfNotes;
+    private ActivityMainBinding mainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        addNoteBtn = findViewById(R.id.add_note_btn);
-        viewOfNotes = findViewById(R.id.notes_view);
-        viewOfNotes.setLayoutManager(new LinearLayoutManager(this));
+        mainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        mainBinding.notesView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NoteListAdapter(this);
-        viewOfNotes.setAdapter(adapter);
-        viewOfNotes.setHasFixedSize(true);
+        mainBinding.notesView.setAdapter(adapter);
+        mainBinding.notesView.setHasFixedSize(true);
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mainActivityViewModel.getListOfNotes().observe(this, new Observer<List<NotesVo>>() {
             @Override
@@ -48,12 +47,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"No Notes Available",Toast.LENGTH_LONG).show();
                 }
                 adapter.setNotelist(notesVos);
-                numberOfNotes=notesVos.size();
 
             }
         });
-
-
 
     }
 

@@ -2,6 +2,7 @@
 <layout>
 <data class="ActivityViewNoteBinding">
     <import type="com.example.searsnotes.dataBinding.PictureBindingAdapters" />
+    <import type="android.view.View" />
     <variable
         name="noteObject"
         type="com.example.searsnotes.model.NotesVo" />

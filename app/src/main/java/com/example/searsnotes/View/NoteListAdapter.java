@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.searsnotes.databinding.RowOfNotesBinding;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.R;
 import com.example.searsnotes.ViewNoteActivity;
@@ -35,49 +37,32 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.row_of_notes,parent,false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        RowOfNotesBinding rowOfNotesBinding = (RowOfNotesBinding) DataBindingUtil.inflate(inflater, R.layout.row_of_notes, parent, false);
+        ViewHolder viewHolder = new ViewHolder(rowOfNotesBinding);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       if(listOfNotes.size()!=0){
-           final NotesVo note = listOfNotes.get(position);
-           holder.noteTitle.setText(note.getNoteTitle());
-           holder.noteTime.setText(note.getNoteTime());
-           if(note.getNoteImage().equals("default")){
-               holder.noteImage.setImageResource(R.drawable.note_thumbnail);
-           }else{
-               Picasso.Builder builder = new Picasso.Builder(context);
-               builder.listener(new Picasso.Listener()
-               {
-                   @Override
-                   public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception)
-                   {
-                       exception.printStackTrace();
-                   }
-               });
-               builder.build().load(Uri.parse(note.getNoteImage())).into(holder.noteImage);
-           }
-
-           holder.getView().setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   Intent intent = new Intent(context, ViewNoteActivity.class);
-                   intent.putExtra("id",note.getNoteID());
-                   ((Activity)context).startActivity(intent);
-               }
-           });
-       }
-
-
+        if (listOfNotes.size() != 0) {
+            final NotesVo note = listOfNotes.get(position);
+            holder.rowOfNotesBinding.setNoteObject(note);
+            holder.getView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ViewNoteActivity.class);
+                    intent.putExtra("id", note.getNoteID());
+                    ((Activity) context).startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        if(listOfNotes!=null){return listOfNotes.size();}
-        else return 0;
+        if (listOfNotes != null) {
+            return listOfNotes.size();
+        } else return 0;
 
     }
 
@@ -88,19 +73,16 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView noteTitle;
-        private TextView noteTime;
-        private CircleImageView noteImage;
-        private View itemView;
+        private RowOfNotesBinding rowOfNotesBinding;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.itemView = itemView;
-            noteTitle = (TextView)itemView.findViewById(R.id.note_title);
-            noteTime = (TextView)itemView.findViewById(R.id.note_time);
-            noteImage = (CircleImageView) itemView.findViewById(R.id.note_image);
+
+        public ViewHolder(@NonNull RowOfNotesBinding itemView) {
+            super(itemView.getRoot());
+            this.rowOfNotesBinding = itemView;
         }
 
-        public View getView(){return this.itemView;}
+        public View getView() {
+            return rowOfNotesBinding.getRoot();
+        }
     }
 }

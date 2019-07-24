@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
 import android.content.Intent;
@@ -24,12 +25,10 @@ import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.Utilities.ImportantMethods;
+import com.example.searsnotes.Utilities.callBack;
+import com.example.searsnotes.databinding.ActivityAddNoteBinding;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 
 public class AddNoteActivity extends AppCompatActivity {
 
@@ -38,18 +37,19 @@ public class AddNoteActivity extends AppCompatActivity {
     private ImageView noteImage;
     private TextView picImage,captureImage;
     private Boolean flag=false;
+    private ActivityAddNoteBinding addNoteBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_note);
+        addNoteBinding = DataBindingUtil.setContentView(this,R.layout.activity_add_note);
         noteTitle = findViewById(R.id.note_title);
         noteText = findViewById(R.id.note_text);
         noteImage = findViewById(R.id.note_image);
         imageUri = null;
         picImage  = findViewById(R.id.pic_note_image);
         captureImage  = findViewById(R.id.capture_note_image);
-        noteTitle.setCustomSelectionActionModeCallback(new callback(noteTitle));
-        noteText.setCustomSelectionActionModeCallback(new callback(noteText));
+        noteTitle.setCustomSelectionActionModeCallback(new callBack(noteTitle,this));
+        noteText.setCustomSelectionActionModeCallback(new callBack(noteText,this));
     }
 
 
@@ -161,35 +161,5 @@ public class AddNoteActivity extends AppCompatActivity {
         }
     }
 
-    private class callback implements ActionMode.Callback {
-        EditText text;
-        public callback(EditText text) { this.text = text;}
-
-        @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            menu.add(0,1,2,"Show Meaning");
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            if(menuItem.getTitle().equals("Show Meaning")){
-                String textSelected= text.getText().toString().trim().substring(text.getSelectionStart(),text.getSelectionEnd());
-                ImportantMethods.getWordMeaning(textSelected,AddNoteActivity.this);
-                actionMode.finish();
-            }
-            return true;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode actionMode) {
-
-        }
-    }
 
 }

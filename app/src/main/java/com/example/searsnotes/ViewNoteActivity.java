@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -21,11 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
+import com.example.searsnotes.Utilities.callBack;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.ViewModels.ViewNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityViewNoteBinding;
-import com.squareup.picasso.Picasso;
 
 public class ViewNoteActivity extends AppCompatActivity {
 
@@ -60,8 +59,8 @@ public class ViewNoteActivity extends AppCompatActivity {
             }
         });
 
-        noteTitle.setCustomSelectionActionModeCallback(new callback(noteTitle));
-        noteText.setCustomSelectionActionModeCallback(new callback(noteText));
+        noteTitle.setCustomSelectionActionModeCallback(new callBack(noteTitle,this));
+        noteText.setCustomSelectionActionModeCallback(new callBack(noteText,this));
 
 
     }
@@ -121,37 +120,4 @@ public class ViewNoteActivity extends AppCompatActivity {
         confirmation.show();
     }
 
-    private class callback implements ActionMode.Callback {
-        TextView text;
-
-        public callback(TextView text) {
-            this.text = text;
-        }
-
-        @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            menu.add(0, 1, 2, "Show Meaning");
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            if (menuItem.getTitle().equals("Show Meaning")) {
-                String textSelected = text.getText().toString().trim().substring(text.getSelectionStart(), text.getSelectionEnd());
-                ImportantMethods.getWordMeaning(textSelected, ViewNoteActivity.this);
-                actionMode.finish();
-            }
-            return true;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode actionMode) {
-
-        }
-    }
 }
