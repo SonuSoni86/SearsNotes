@@ -51,7 +51,8 @@ public class ViewNoteActivityViewModel extends AndroidViewModel {
                 notesVo.setNoteImage(dataBundle.getString("uri"));
                 notesVo.setNoteTime(dataBundle.getString("time"));
                 updateNote(notesVo);
-                Toast.makeText(getApplication().getApplicationContext(), "Edited note saved", Toast.LENGTH_LONG).show();
+               Toast.makeText(getApplication().getApplicationContext(), "Edited note saved", Toast.LENGTH_LONG).show();
+
             } else {
                 Toast.makeText(getApplication().getApplicationContext(), "Edited Note Not saved", Toast.LENGTH_LONG).show();
             }
