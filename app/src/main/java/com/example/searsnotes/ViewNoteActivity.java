@@ -1,54 +1,37 @@
 package com.example.searsnotes;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
-import com.example.searsnotes.Utilities.callBack;
+import com.example.searsnotes.Utilities.CustomCallBack;
 import com.example.searsnotes.model.NotesVo;
-import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.ViewModels.ViewNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityViewNoteBinding;
 
 public class ViewNoteActivity extends AppCompatActivity {
 
-    private TextView noteTitle, noteText;
-    private ImageView noteImage;
     private ViewNoteActivityViewModel viewModel;
     private int noteID;
     private LiveData<NotesVo> note;
     private NotesVo noteObject;
-    private MainActivity mainActivityInstance;
     private ActivityViewNoteBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_view_note);
-        noteTitle = findViewById(R.id.note_title);
-        noteText = findViewById(R.id.note_text);
-        noteImage = findViewById(R.id.note_image);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_view_note);
         noteID = getIntent().getIntExtra("id", -1);
-        if (noteID == -1) {
-            Toast.makeText(this, "Data Not found", Toast.LENGTH_SHORT).show();
-            finish();
-        }
         viewModel = ViewModelProviders.of(this).get(ViewNoteActivityViewModel.class);
         note = viewModel.getNote(noteID);
         note.observe(this, new Observer<NotesVo>() {
@@ -59,12 +42,10 @@ public class ViewNoteActivity extends AppCompatActivity {
             }
         });
 
-        noteTitle.setCustomSelectionActionModeCallback(new callBack(noteTitle,this));
-        noteText.setCustomSelectionActionModeCallback(new callBack(noteText,this));
-
+        mBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(mBinding.noteTitle, this));
+        mBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(mBinding.noteText, this));
 
     }
-
 
     public void discardBtnClicked(View view) {
         finish();
@@ -79,26 +60,13 @@ public class ViewNoteActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IntentRequestCodes.UPDATE_NOTE_ACTIVITY_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Bundle dataBundle = data.getBundleExtra("note_data");
-                NotesVo notesVo = new NotesVo();
-                notesVo.setNoteID(dataBundle.getInt("id"));
-                notesVo.setNoteTitle(dataBundle.getString("title"));
-                notesVo.setNoteText(dataBundle.getString("text"));
-                notesVo.setNoteImage(dataBundle.getString("uri"));
-                notesVo.setNoteTime(dataBundle.getString("time"));
-                viewModel.updateNote(notesVo);
-                Toast.makeText(getApplicationContext(), notesVo.getNoteTitle(), Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Edited Note Not saved", Toast.LENGTH_LONG).show();
-            }
-        }
+        viewModel.onActivityResult(requestCode, resultCode, data);
     }
 
     public void deleteBtnClicked(View view) {
 
-        final AlertDialog.Builder confirmation = new AlertDialog.Builder(this);
+
+        AlertDialog.Builder confirmation = new AlertDialog.Builder(this);
         confirmation.setTitle("Confirm");
         confirmation.setMessage(" Do you really want to delete this note?");
         confirmation.setIcon(R.drawable.ic_delete_black_24dp);
@@ -119,5 +87,6 @@ public class ViewNoteActivity extends AppCompatActivity {
         });
         confirmation.show();
     }
+
 
 }

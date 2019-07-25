@@ -27,7 +27,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private MainActivityViewModel mainActivityViewModel;
-    private List<NotesVo> notesVoList = new ArrayList<>();
     private NoteListAdapter adapter;
     private ActivityMainBinding mainBinding;
 
@@ -43,11 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mainActivityViewModel.getListOfNotes().observe(this, new Observer<List<NotesVo>>() {
             @Override
             public void onChanged(List<NotesVo> notesVos) {
-                if(notesVos.size()==0){
-                    Toast.makeText(getApplicationContext(),"No Notes Available",Toast.LENGTH_LONG).show();
-                }
                 adapter.setNotelist(notesVos);
-
             }
         });
 
@@ -62,20 +57,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==IntentRequestCodes.NEW_NOTE_ACTIVITY_REQUEST){
-            if(resultCode==RESULT_OK){
-                Bundle dataBundle = data.getBundleExtra("note_data");
-                NotesVo note = new NotesVo();
-                note.setNoteTitle(dataBundle.getString("title"));
-                note.setNoteText(dataBundle.getString("text"));
-                note.setNoteImage(dataBundle.getString("uri"));
-                note.setNoteTime(dataBundle.getString("time"));
-                mainActivityViewModel.addNote(note);
-                Toast.makeText(getApplicationContext(),"Note saved",Toast.LENGTH_LONG).show();
-
-            }else{
-                Toast.makeText(getApplicationContext(),"Note Not saved",Toast.LENGTH_LONG).show();
-            }
-        }
+        mainActivityViewModel.onActivityResult(requestCode,resultCode,data);
     }
 }

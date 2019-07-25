@@ -3,6 +3,7 @@ package com.example.searsnotes.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Notes_Table")
@@ -61,5 +62,13 @@ public class NotesVo {
 
     public void setNoteImage(String noteImage) {
         this.noteImage = noteImage;
+    }
+
+
+    @Ignore
+    public boolean equals()
+    {
+        if(getNoteImage().equals("default")) return true;
+        else return false;
     }
 }

@@ -9,15 +9,15 @@ import android.widget.TextView;
 import android.view.ActionMode;
 import com.example.searsnotes.AddNoteActivity;
 
-public class callBack implements ActionMode.Callback {
+public class CustomCallBack implements ActionMode.Callback {
 
     EditText editText;
     TextView textView;
     Context context;
     int choice;
 
-    public callBack(EditText text,Context context) { this.editText = text; this.context= context; choice=1;}
-    public callBack(TextView text,Context context) { this.textView = text; this.context =context; choice=2;}
+    public CustomCallBack(EditText text, Context context) { this.editText = text; this.context= context; choice=1;}
+    public CustomCallBack(TextView text, Context context) { this.textView = text; this.context =context; choice=2;}
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
