@@ -89,37 +89,8 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
-
-        switch (requestCode){
-            case IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST:
-                if(resultCode==RESULT_OK)
-                {
-                    Bitmap tempBmp = (Bitmap)data.getExtras().get("data");
-                    editNoteBinding.noteImage.setImageBitmap(tempBmp);
-                    imageUri= ImportantMethods.getImageUri(EditNoteActivity.this,tempBmp).toString();
-                }
-                break;
-
-            case IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST:
-                if(resultCode==RESULT_OK)
-            {
-                Uri tempUri = data.getData();
-                Bitmap tempBmp=null;
-                try {
-                    tempBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(),tempUri);
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-                editNoteBinding.noteImage.setImageBitmap(tempBmp);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    this.getContentResolver().takePersistableUriPermission(tempUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                }
-                imageUri = tempUri.toString();
-            }
-            break;
-        }
+        imageUri = viewModel.onActivityResult(requestCode,resultCode,data,imageUri);
+        editNoteBinding.noteImage.setImageURI(Uri.parse(imageUri));
     }
 
 
