@@ -31,7 +31,7 @@ import java.io.IOException;
 public class AddNoteActivity extends AppCompatActivity {
 
     private EditText noteTitle,noteText;
-    private String imageUri,noteTime;
+    private String imageUri;
     private ImageView noteImage;
     private TextView picImage,captureImage;
     private ActivityAddNoteBinding addNoteBinding;
