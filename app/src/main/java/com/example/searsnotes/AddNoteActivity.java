@@ -17,7 +17,10 @@ import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.Utilities.CustomCallBack;
 import com.example.searsnotes.ViewModels.AddNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityAddNoteBinding;
+import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
+
+import javax.inject.Inject;
 
 public class AddNoteActivity extends AppCompatActivity {
 
@@ -25,6 +28,8 @@ public class AddNoteActivity extends AppCompatActivity {
     private TextView picImage,captureImage;
     private ActivityAddNoteBinding addNoteBinding;
     private NotesVo note= new NotesVo();
+    @Inject
+    ViewModelProviderFactory providerFactory;
     private AddNoteActivityViewModel viewModel;
 
     @Override
@@ -37,7 +42,7 @@ public class AddNoteActivity extends AppCompatActivity {
         addNoteBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(addNoteBinding.noteTitle,this));
         addNoteBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(addNoteBinding.noteText,this));
         addNoteBinding.setNoteObject(note);
-        viewModel = ViewModelProviders.of(this).get(AddNoteActivityViewModel.class);
+        viewModel = ViewModelProviders.of(this,providerFactory).get(AddNoteActivityViewModel.class);
     }
 
 

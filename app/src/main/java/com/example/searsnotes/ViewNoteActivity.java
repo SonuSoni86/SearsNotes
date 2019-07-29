@@ -15,24 +15,30 @@ import android.view.View;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.Utilities.CustomCallBack;
+import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.ViewModels.ViewNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityViewNoteBinding;
 
+import javax.inject.Inject;
+
 public class ViewNoteActivity extends AppCompatActivity {
 
-    private ViewNoteActivityViewModel viewModel;
     private int noteID;
     private LiveData<NotesVo> note;
     private NotesVo noteObject;
     private ActivityViewNoteBinding mBinding;
+    @Inject
+    ViewModelProviderFactory providerFactory;
+    private ViewNoteActivityViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_view_note);
         noteID = getIntent().getIntExtra("id", -1);
-        viewModel = ViewModelProviders.of(this).get(ViewNoteActivityViewModel.class);
+        viewModel = ViewModelProviders.of(this,providerFactory).get(ViewNoteActivityViewModel.class);
         note = viewModel.getNote(noteID);
         note.observe(this, new Observer<NotesVo>() {
             @Override

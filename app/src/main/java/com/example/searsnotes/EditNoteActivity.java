@@ -20,16 +20,21 @@ import android.widget.TextView;
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.Utilities.CustomCallBack;
 import com.example.searsnotes.databinding.ActivityEditNoteBinding;
+import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.ViewModels.EditNoteActivityViewModel;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 public class EditNoteActivity extends AppCompatActivity {
     private String imageUri;
     private TextView picImage,captureImage;
     private int noteID;
+    @Inject
+    ViewModelProviderFactory providerFactory;
     private EditNoteActivityViewModel viewModel;
     private LiveData<NotesVo> note;
     private ActivityEditNoteBinding editNoteBinding;
@@ -45,7 +50,7 @@ public class EditNoteActivity extends AppCompatActivity {
         editNoteBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(editNoteBinding.noteText,this));
 
         noteID = getIntent().getIntExtra("id",-1);
-        viewModel = ViewModelProviders.of(this).get(EditNoteActivityViewModel.class);
+        viewModel = ViewModelProviders.of(this,providerFactory).get(EditNoteActivityViewModel.class);
         note =viewModel.getNote(noteID);
         note.observe(this, new Observer<NotesVo>() {
             @Override

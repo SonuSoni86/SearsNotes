@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         adapter = new NoteListAdapter(this);
         mainBinding.notesView.setAdapter(adapter);
         mainBinding.notesView.setHasFixedSize(true);
-        //mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mainActivityViewModel = ViewModelProviders.of(this,providerFactory).get(MainActivityViewModel.class);
         mainActivityViewModel.getListOfNotes().observe(this, new Observer<List<NotesVo>>() {
             @Override
