@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.databinding.ActivityMainBinding;
 import com.example.searsnotes.databinding.ActivityViewNoteBinding;
+import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.View.NoteListAdapter;
 import com.example.searsnotes.ViewModels.MainActivityViewModel;
@@ -24,11 +25,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
 
     private MainActivityViewModel mainActivityViewModel;
     private NoteListAdapter adapter;
     private ActivityMainBinding mainBinding;
+
+    @Inject
+    ViewModelProviderFactory providerFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
         adapter = new NoteListAdapter(this);
         mainBinding.notesView.setAdapter(adapter);
         mainBinding.notesView.setHasFixedSize(true);
-        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        //mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        mainActivityViewModel = ViewModelProviders.of(this,providerFactory).get(MainActivityViewModel.class);
         mainActivityViewModel.getListOfNotes().observe(this, new Observer<List<NotesVo>>() {
             @Override
             public void onChanged(List<NotesVo> notesVos) {

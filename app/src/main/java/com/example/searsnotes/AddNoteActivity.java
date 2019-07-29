@@ -1,33 +1,23 @@
 package com.example.searsnotes;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.Utilities.CustomCallBack;
+import com.example.searsnotes.ViewModels.AddNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityAddNoteBinding;
 import com.example.searsnotes.model.NotesVo;
-
-import java.io.IOException;
 
 public class AddNoteActivity extends AppCompatActivity {
 

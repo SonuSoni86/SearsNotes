@@ -1,4 +1,4 @@
-package com.example.searsnotes;
+package com.example.searsnotes.ViewModels;
 
 import android.app.Application;
 import android.content.Intent;

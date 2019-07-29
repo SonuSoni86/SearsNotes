@@ -20,6 +20,8 @@ import com.example.searsnotes.model.NotesVo;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import static android.app.Activity.RESULT_OK;
 
 public class MainActivityViewModel extends AndroidViewModel {
@@ -29,6 +31,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     private NotesDatabase notesDatabaseInstace;
     private LiveData<List<NotesVo>> listOfNotes;
 
+    @Inject
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
 
