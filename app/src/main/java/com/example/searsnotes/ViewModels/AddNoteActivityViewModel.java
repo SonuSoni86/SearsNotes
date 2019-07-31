@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
+import com.example.searsnotes.R;
 import com.example.searsnotes.Utilities.ImportantMethods;
 
 import static android.app.Activity.RESULT_OK;

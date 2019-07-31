@@ -47,7 +47,6 @@ public class ViewNoteActivity extends AppCompatActivity {
                 mBinding.setNoteObject(noteObject);
             }
         });
-
         mBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(mBinding.noteTitle, this));
         mBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(mBinding.noteText, this));
 
@@ -58,9 +57,7 @@ public class ViewNoteActivity extends AppCompatActivity {
     }
 
     public void editBtnClicked(View view) {
-        Intent intent = new Intent(ViewNoteActivity.this, EditNoteActivity.class);
-        intent.putExtra("id", noteID);
-        startActivityForResult(intent, IntentRequestCodes.UPDATE_NOTE_ACTIVITY_REQUEST);
+        startActivityForResult(new Intent(ViewNoteActivity.this, EditNoteActivity.class).putExtra("id",noteID), IntentRequestCodes.UPDATE_NOTE_ACTIVITY_REQUEST);
     }
 
     @Override
@@ -70,7 +67,6 @@ public class ViewNoteActivity extends AppCompatActivity {
     }
 
     public void deleteBtnClicked(View view) {
-
 
         AlertDialog.Builder confirmation = new AlertDialog.Builder(this);
         confirmation.setTitle("Confirm");

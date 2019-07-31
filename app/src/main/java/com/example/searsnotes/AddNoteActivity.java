@@ -65,8 +65,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
     public void saveBtnClicked(View view) {
         Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri, ImportantMethods.gettime());
-        Intent resultIntent = new Intent().putExtra("note_data", noteDataBundle);
-        setResult(RESULT_OK, resultIntent);
+        setResult(RESULT_OK,  new Intent().putExtra("note_data", noteDataBundle));
         finish();
     }
 
@@ -78,9 +77,7 @@ public class AddNoteActivity extends AppCompatActivity {
     public void picImageClicked(View view) {
         requestMultiplePermissions();
         if (flag) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("image/*");
-            startActivityForResult(Intent.createChooser(intent, "Pic an Image"), IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
+            startActivityForResult(Intent.createChooser(new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*"), "Pic an Image"), IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
         }
 
     }
