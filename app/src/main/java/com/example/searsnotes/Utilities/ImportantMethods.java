@@ -1,17 +1,22 @@
 package com.example.searsnotes.Utilities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.searsnotes.AddNoteActivity;
 import com.example.searsnotes.Dao.RetrofitClientInstance;
 import com.example.searsnotes.Dao.WordApi;
+import com.example.searsnotes.EditNoteActivity;
 import com.example.searsnotes.R;
 import com.example.searsnotes.model.Definitions;
 import com.example.searsnotes.model.DictionaryMeaning;
@@ -91,4 +96,12 @@ public class ImportantMethods {
     }
 
 
+    public static boolean hasAllPermissions( Context context) {
+        if ((ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
+            return true;
+        } else return false;
+
+    }
 }

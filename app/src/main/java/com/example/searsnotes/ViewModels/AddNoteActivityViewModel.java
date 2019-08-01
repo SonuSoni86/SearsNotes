@@ -10,17 +10,17 @@ import android.util.Log;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
-import com.example.searsnotes.R;
+
 import com.example.searsnotes.Utilities.ImportantMethods;
+import com.example.searsnotes.navigators.AddNoteActivityNavigator;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AddNoteActivityViewModel extends AndroidViewModel {
+public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavigator> {
 
-    public final String TAG = this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
 
     public AddNoteActivityViewModel(@NonNull Application application) {
         super(application);
@@ -32,7 +32,7 @@ public class AddNoteActivityViewModel extends AndroidViewModel {
         Log.d(TAG, "Add note ACtivity destroyed ");
     }
 
-    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri, String gettime) {
+    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri) {
         Bundle noteDataBundle = new Bundle();
         noteDataBundle.putString("title",noteTitle.getText().toString().trim());
         noteDataBundle.putString("text",noteText.getText().toString().trim());
@@ -69,5 +69,16 @@ public class AddNoteActivityViewModel extends AndroidViewModel {
                 break;
         }
         return imageUri;
+    }
+
+    public void openViewModelGalary() {
+        if(ImportantMethods.hasAllPermissions(getApplication().getApplicationContext())){getNavigator().openGalary();}
+    }
+    public void openViewModelCamera() {
+        if(ImportantMethods.hasAllPermissions(getApplication().getApplicationContext())){getNavigator().openCamera();}
+    }
+
+    public void checkImageUri(String imageUri) {
+        if(imageUri!=null){getNavigator().setNoteImage(imageUri);}
     }
 }

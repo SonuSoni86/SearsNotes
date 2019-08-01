@@ -19,12 +19,13 @@ import com.example.searsnotes.Dao.NotesDao;
 import com.example.searsnotes.Dao.NotesDatabase;
 import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.model.NotesVo;
+import com.example.searsnotes.navigators.EditNoteActivityNavigator;
 
 import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 
-public class EditNoteActivityViewModel extends AndroidViewModel {
+public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNavigator> {
 
     private final String TAG = this.getClass().getSimpleName();
     private NotesDao notesDao;
@@ -85,4 +86,16 @@ public class EditNoteActivityViewModel extends AndroidViewModel {
         }
         return imageUri;
     }
+
+    public void openViewModelGalary() {
+        if(ImportantMethods.hasAllPermissions(getApplication().getApplicationContext())){getNavigator().openGalary();}
+    }
+    public void openViewModelCamera() {
+        if(ImportantMethods.hasAllPermissions(getApplication().getApplicationContext())){getNavigator().openCamera();}
+    }
+
+    public void checkImageUri(String imageUri) {
+        if(imageUri!=null){getNavigator().setNoteImage(imageUri);}
+    }
+
 }

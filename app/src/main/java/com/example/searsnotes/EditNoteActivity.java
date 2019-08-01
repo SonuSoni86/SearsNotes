@@ -31,6 +31,7 @@ import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.ViewModels.EditNoteActivityViewModel;
+import com.example.searsnotes.navigators.EditNoteActivityNavigator;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -44,7 +45,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class EditNoteActivity extends AppCompatActivity {
+public class EditNoteActivity extends AppCompatActivity implements EditNoteActivityNavigator {
     private String imageUri;
     private TextView picImage,captureImage;
     private int noteID;
@@ -75,6 +76,7 @@ public class EditNoteActivity extends AppCompatActivity {
                 imageUri = notesVo.getNoteImage();
             }
         });
+        viewModel.setNavigator(this);
     }
 
     public void saveBtnClicked(View view) {
@@ -85,19 +87,12 @@ public class EditNoteActivity extends AppCompatActivity {
 
     public void picImageClicked(View view) {
         requestMultiplePermissions();
-        if (flag) {
-            startActivityForResult(Intent.createChooser( new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*"), "Pic an Image"), IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
-        }
+        viewModel.openViewModelGalary();
     }
 
     public void captureImageClicked(View view) {
         requestMultiplePermissions();
-        if (flag) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(intent, IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
-            }
-        }
+      viewModel.openViewModelCamera();
     }
 
     public void discardBtnClicked(View view) { finish();}
@@ -110,15 +105,7 @@ public class EditNoteActivity extends AppCompatActivity {
         editNoteBinding.noteImage.setImageURI(Uri.parse(imageUri));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if ((ContextCompat.checkSelfPermission(EditNoteActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                && (ContextCompat.checkSelfPermission(EditNoteActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                && (ContextCompat.checkSelfPermission(EditNoteActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
-            flag = true;
-        }
-    }
+
 
     private void requestMultiplePermissions() {
         Dexter.withActivity(this)
@@ -168,4 +155,22 @@ public class EditNoteActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void openGalary() {
+        startActivityForResult(Intent.createChooser( new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*"), "Pic an Image"), IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
+    }
+
+    @Override
+    public void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
+        }
+    }
+
+
+    @Override
+    public void setNoteImage(String uri){
+        editNoteBinding.noteImage.setImageURI(Uri.parse(imageUri));
+    }
 }
