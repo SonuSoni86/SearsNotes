@@ -1,6 +1,5 @@
 package com.example.searsnotes.dataBinding;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;

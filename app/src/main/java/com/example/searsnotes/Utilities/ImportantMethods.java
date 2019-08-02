@@ -1,10 +1,10 @@
 package com.example.searsnotes.Utilities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,13 +13,12 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.searsnotes.AddNoteActivity;
 import com.example.searsnotes.Dao.RetrofitClientInstance;
 import com.example.searsnotes.Dao.WordApi;
-import com.example.searsnotes.EditNoteActivity;
-import com.example.searsnotes.R;
 import com.example.searsnotes.model.Definitions;
 import com.example.searsnotes.model.DictionaryMeaning;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -41,18 +40,16 @@ public class ImportantMethods {
 
     public static String gettime() {
         Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
-        String formattedtime = simpleDateFormat.format(date);
-        return formattedtime;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+        return simpleDateFormat.format(date);
     }
 
 
-    public static boolean checkIfWord(String text) {
-        if (text.indexOf(' ') >= 0) return false;
-        else return true;
+    private static boolean checkIfWord(String text) {
+            return !(text.indexOf(' ')>=0);
     }
 
-    public static void getWordMeaning(String textSelected, final Context context) {
+    static void getWordMeaning(String textSelected, final Context context) {
         if (!checkIfWord(textSelected)) {
             Toast.makeText(context, "Meaning of only words can be shown", Toast.LENGTH_LONG).show();
         } else {
@@ -63,7 +60,7 @@ public class ImportantMethods {
 
             meaningCall.enqueue(new Callback<DictionaryMeaning>() {
                 @Override
-                public void onResponse(Call<DictionaryMeaning> call, Response<DictionaryMeaning> response) {
+                public void onResponse(@NotNull Call<DictionaryMeaning> call, Response<DictionaryMeaning> response) {
                     progressDialog.dismiss();
                     if (!response.isSuccessful()) {
                         if (response.code() == 404) {
@@ -75,6 +72,7 @@ public class ImportantMethods {
                         return;
                     }
 
+                    assert response.body() != null;
                     List<Definitions> definitionsList = response.body().getDefinitions();
                     if (definitionsList.size() == 0) {
                         Toast.makeText(context, "No definition found", Toast.LENGTH_LONG).show();
@@ -86,8 +84,9 @@ public class ImportantMethods {
                     }
                 }
 
+
                 @Override
-                public void onFailure(Call<DictionaryMeaning> call, Throwable t) {
+                public void onFailure( Call<DictionaryMeaning> call, Throwable t) {
                     progressDialog.dismiss();
                     Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -96,12 +95,10 @@ public class ImportantMethods {
     }
 
 
-    public static boolean hasAllPermissions( Context context) {
-        if ((ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                && (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                && (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
-            return true;
-        } else return false;
+    public static boolean hasAllPermissions(Context context) {
+       return ((ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+               && (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+               && (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED));
 
     }
 }

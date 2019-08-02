@@ -1,6 +1,5 @@
 package com.example.searsnotes.dependencyInjection;
 
-import android.view.View;
 
 import com.example.searsnotes.AddNoteActivity;
 import com.example.searsnotes.EditNoteActivity;

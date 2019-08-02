@@ -100,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_margin="30dp"
                     android:onClick="saveBtnClicked"
                     android:src="@drawable/ic_check_white_24dp" />

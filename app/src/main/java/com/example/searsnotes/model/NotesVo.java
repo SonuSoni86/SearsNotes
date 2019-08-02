@@ -1,6 +1,5 @@
 package com.example.searsnotes.model;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -9,7 +8,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "Notes_Table")
 public class NotesVo {
 
-    @NonNull
     @ColumnInfo(name = "Note_ID")
     @PrimaryKey(autoGenerate = true)
     private int noteID;
@@ -23,12 +21,11 @@ public class NotesVo {
     private String noteImage;
 
 
-    @NonNull
     public int getNoteID() {
         return noteID;
     }
 
-    public void setNoteID(@NonNull int noteID) {
+    public void setNoteID( int noteID) {
         this.noteID = noteID;
     }
 
@@ -65,10 +62,4 @@ public class NotesVo {
     }
 
 
-    @Ignore
-    public boolean equals()
-    {
-        if(getNoteImage().equals("default")) return true;
-        else return false;
-    }
 }

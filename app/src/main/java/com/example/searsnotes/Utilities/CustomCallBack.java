@@ -7,14 +7,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import android.view.ActionMode;
-import com.example.searsnotes.AddNoteActivity;
 
 public class CustomCallBack implements ActionMode.Callback {
 
-    EditText editText;
-    TextView textView;
-    Context context;
-    int choice;
+   private EditText editText;
+   private TextView textView;
+   private Context context;
+   private int choice;
 
     public CustomCallBack(EditText text, Context context) { this.editText = text; this.context= context; choice=1;}
     public CustomCallBack(TextView text, Context context) { this.textView = text; this.context =context; choice=2;}
