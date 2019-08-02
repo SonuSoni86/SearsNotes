@@ -6,23 +6,17 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
-
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.databinding.ActivityMainBinding;
-import com.example.searsnotes.databinding.ActivityViewNoteBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.View.NoteListAdapter;
 import com.example.searsnotes.ViewModels.MainActivityViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private MainActivityViewModel mainActivityViewModel;
     private NoteListAdapter adapter;
-    private ActivityMainBinding mainBinding;
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -39,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        ActivityMainBinding mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainBinding.notesView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NoteListAdapter(this);
         mainBinding.notesView.setAdapter(adapter);

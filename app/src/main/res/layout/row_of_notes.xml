@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="noteObject"
@@ -32,7 +32,8 @@
                     android:paddingLeft="20dp"
                     android:id="@+id/note_title"
                     android:text="@{noteObject.noteTitle}"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tools:ignore="RtlSymmetry" />
 
                 <TextView
                     android:layout_width="wrap_content"

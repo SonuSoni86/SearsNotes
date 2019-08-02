@@ -1,10 +1,9 @@
 package com.example.searsnotes;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -13,15 +12,12 @@ import androidx.lifecycle.ViewModelProviders;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
@@ -40,35 +36,29 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 public class EditNoteActivity extends AppCompatActivity implements EditNoteActivityNavigator {
     private String imageUri;
-    private TextView picImage,captureImage;
     private int noteID;
     @Inject
     ViewModelProviderFactory providerFactory;
     private EditNoteActivityViewModel viewModel;
-    private LiveData<NotesVo> note;
     private ActivityEditNoteBinding editNoteBinding;
-    private boolean flag=false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         editNoteBinding = DataBindingUtil.setContentView(this,R.layout.activity_edit_note);
-        picImage  = findViewById(R.id.pic_note_image);
-        captureImage  = findViewById(R.id.capture_note_image);
         editNoteBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(editNoteBinding.noteTitle,this));
         editNoteBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(editNoteBinding.noteText,this));
 
         noteID = getIntent().getIntExtra("id",-1);
         viewModel = ViewModelProviders.of(this,providerFactory).get(EditNoteActivityViewModel.class);
-        note =viewModel.getNote(noteID);
+        LiveData<NotesVo> note = viewModel.getNote(noteID);
         note.observe(this, new Observer<NotesVo>() {
             @Override
             public void onChanged(NotesVo notesVo) {
@@ -117,10 +107,9 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
-                            flag = true;
+                            return;
                         }
                         if (report.isAnyPermissionPermanentlyDenied()) {
-                            flag = false;
                             AlertDialog.Builder builder = new AlertDialog.Builder(EditNoteActivity.this);
                             builder.setTitle("Permission Denied")
                                     .setMessage(" Some Permissions are permanently denied. you need to go to setting to allow the permissions.")
@@ -155,6 +144,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void openGalary() {
         startActivityForResult(Intent.createChooser( new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*"), "Pic an Image"), IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
@@ -173,4 +163,5 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     public void setNoteImage(String uri){
         editNoteBinding.noteImage.setImageURI(Uri.parse(imageUri));
     }
+
 }

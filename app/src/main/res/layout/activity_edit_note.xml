@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="noteObject"
             type="com.example.searsnotes.model.NotesVo" />
     </data>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -32,7 +32,9 @@
                     android:hint="Enter Title"
                     android:text="@{noteObject.noteTitle}"
                     android:textColor="@android:color/black"
-                    android:textIsSelectable="true" />
+                    android:inputType="text"
+                    android:textIsSelectable="true"
+                    android:importantForAutofill="no" />
 
                 <EditText
                     android:id="@+id/note_text"

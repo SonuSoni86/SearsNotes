@@ -10,6 +10,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -138,7 +139,9 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
     @Override
     public void openGalary() {
-        startActivityForResult(Intent.createChooser(new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*"), "Pic an Image"), IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            startActivityForResult(Intent.createChooser(new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*"), "Pic an Image"), IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
+        }
     }
 
     @Override

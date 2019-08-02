@@ -34,6 +34,7 @@ public class ImportantMethods {
     public static Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        //noinspection deprecation
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
@@ -60,7 +61,7 @@ public class ImportantMethods {
 
             meaningCall.enqueue(new Callback<DictionaryMeaning>() {
                 @Override
-                public void onResponse(@NotNull Call<DictionaryMeaning> call, Response<DictionaryMeaning> response) {
+                public void onResponse(@NotNull Call<DictionaryMeaning> call, @NotNull Response<DictionaryMeaning> response) {
                     progressDialog.dismiss();
                     if (!response.isSuccessful()) {
                         if (response.code() == 404) {
