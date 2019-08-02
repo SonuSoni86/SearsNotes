@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="noteObject"
+            type="com.example.searsnotes.model.NotesVo" />
+    </data>
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_blue_bright"
+        tools:context=".AddNoteActivity">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/note_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center_horizontal"
+                    android:hint="Enter Title"
+                    android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:textIsSelectable="true"
+                    android:importantForAutofill="no"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/note_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/note_title"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="30dp"
+                    android:gravity="center_horizontal"
+                    android:hint="Enter Text"
+                    android:inputType="textMultiLine"
+                    android:textColor="@android:color/black"
+                    android:textIsSelectable="true"
+                    tools:ignore="HardcodedText"
+                    android:importantForAutofill="no" />
+
+                <ImageView
+                    android:id="@+id/note_image"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_below="@id/note_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp"
+                    android:src="@drawable/note_thumbnail"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/pic_note_image"
+                    android:layout_width="250dp"
+                    android:layout_height="125dp"
+                    android:layout_below="@id/note_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:onClick="picImageClicked"
+                    android:text="Click to Pic Image"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/capture_note_image"
+                    android:layout_width="250dp"
+                    android:layout_height="120dp"
+                    android:layout_below="@id/pic_note_image"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:onClick="captureImageClicked"
+                    android:text="Click to Capture Image"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp"
+                    tools:ignore="HardcodedText" />
+
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/discard_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="30dp"
+                    android:onClick="discardBtnClicked"
+                    android:src="@drawable/ic_cancel_white_70dp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/save_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="30dp"
+                    android:onClick="saveBtnClicked"
+                    android:src="@drawable/ic_check_white_24dp"
+                    tools:ignore="RelativeOverlap,RtlHardcoded" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+</layout>
