@@ -76,12 +76,12 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     }
 
     public void picImageClicked(View view) {
-        requestMultiplePermissions();
+        requestMultiplePermissions(IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
         viewModel.openViewModelGalary();
     }
 
     public void captureImageClicked(View view) {
-        requestMultiplePermissions();
+        requestMultiplePermissions(IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
       viewModel.openViewModelCamera();
     }
 
@@ -97,7 +97,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
 
 
 
-    private void requestMultiplePermissions() {
+    private void requestMultiplePermissions(final int requestCode) {
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -107,7 +107,8 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
-                            return;
+                            if(requestCode==IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST) viewModel.openViewModelGalary();
+                            if(requestCode==IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST) viewModel.openViewModelCamera();
                         }
                         if (report.isAnyPermissionPermanentlyDenied()) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(EditNoteActivity.this);

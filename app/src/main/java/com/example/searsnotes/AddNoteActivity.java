@@ -71,13 +71,13 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     }
 
     public void picImageClicked(View view) {
-        requestMultiplePermissions();
+        requestMultiplePermissions(IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
        viewModel.openViewModelGalary();
     }
 
 
     public void captureImageClicked(View view) {
-        requestMultiplePermissions();
+        requestMultiplePermissions(IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
         viewModel.openViewModelCamera();
 
     }
@@ -90,7 +90,7 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     }
 
 
-    private void requestMultiplePermissions() {
+    private void requestMultiplePermissions(final int requestCode) {
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -101,6 +101,8 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
                             flag = true;
+                            if(requestCode==IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST) viewModel.openViewModelGalary();
+                            if(requestCode==IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST) viewModel.openViewModelCamera();
                         }
                         if (report.isAnyPermissionPermanentlyDenied()) {
                             flag = false;
