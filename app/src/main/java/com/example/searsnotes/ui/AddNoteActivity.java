@@ -63,10 +63,6 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
 
 
-    public void picImageClicked(View view) {
-        requestMultiplePermissions(IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
-       viewModel.openViewModelGalary();
-    }
 
 
     public void captureImageClicked(View view) {
@@ -84,7 +80,8 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     }
 
 
-    private void requestMultiplePermissions(final int requestCode) {
+    @Override
+    public void requestMultiplePermissions(final int requestCode) {
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.READ_EXTERNAL_STORAGE,

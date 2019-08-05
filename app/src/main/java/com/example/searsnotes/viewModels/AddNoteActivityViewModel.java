@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -89,10 +88,19 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         if(imageUri!=null){getNavigator().setNoteImage(imageUri);}
     }
 
-    public void saveBtnClicked(View view) { getNavigator().saveButtonClicked(); }
+    public void saveBtnClicked() { getNavigator().saveButtonClicked(); }
 
 
-    public void discardBtnClicked(View view){getNavigator().discardButtonClicked(); }
+    public void discardBtnClicked(){getNavigator().discardButtonClicked(); }
 
+    public void picImageClicked(){
+        getNavigator().requestMultiplePermissions(IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
+        openViewModelGalary();
+    }
+
+    public void captureImageClicked(){
+        getNavigator().requestMultiplePermissions(IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
+        openViewModelCamera();
+    }
 
 }

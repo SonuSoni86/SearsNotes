@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -89,8 +88,8 @@ public class ViewNoteActivityViewModel extends BaseViewModel<ViewNoteActivityNav
         }
     }
 
-    public void discardBtnClicked(View view) { getNavigator().discardBtnClicked();}
-    public void editBtnClicked(View view) {getNavigator().editBtnClicked(); }
-    public void deleteBtnClicked(View view) {getNavigator().deleteBtnClicked(); }
+    public void discardBtnClicked() { getNavigator().discardBtnClicked();}
+    public void editBtnClicked() {getNavigator().editBtnClicked(); }
+    public void deleteBtnClicked() {getNavigator().deleteBtnClicked(); }
 
 }

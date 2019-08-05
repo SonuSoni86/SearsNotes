@@ -74,7 +74,7 @@
                     android:layout_marginTop="50dp"
                     android:background="@drawable/border"
                     android:gravity="center"
-                    android:onClick="picImageClicked"
+                    android:onClick="@{() -> viewModel.picImageClicked()}"
                     android:text="Click to Pic Image"
                     android:textColor="@android:color/black"
                     android:textSize="25sp"
@@ -89,7 +89,7 @@
                     android:layout_marginTop="2dp"
                     android:background="@drawable/border"
                     android:gravity="center"
-                    android:onClick="captureImageClicked"
+                    android:onClick="@{()-> viewModel.captureImageClicked()}"
                     android:text="Click to Capture Image"
                     android:textColor="@android:color/black"
                     android:textSize="25sp"
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="30dp"
-                    android:onClick="@{viewModel::discardBtnClicked}"
+                    android:onClick="@{()-> viewModel.discardBtnClicked()}"
                     android:src="@drawable/ic_cancel_white_70dp" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -113,7 +113,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="30dp"
-                    android:onClick="@{viewModel::saveBtnClicked}"
+                    android:onClick="@{()-> viewModel.saveBtnClicked()}"
                     android:src="@drawable/ic_check_white_24dp"
                     tools:ignore="RelativeOverlap,RtlHardcoded" />
             </RelativeLayout>

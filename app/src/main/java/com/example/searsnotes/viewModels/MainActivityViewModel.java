@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
@@ -19,8 +17,6 @@ import com.example.searsnotes.Dao.NotesDao;
 import com.example.searsnotes.Dao.NotesDatabase;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.navigators.MainActivityNavigator;
-import com.example.searsnotes.ui.AddNoteActivity;
-import com.example.searsnotes.ui.MainActivity;
 
 import java.util.List;
 
@@ -93,7 +89,7 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
         super.onCleared();
         Log.i(TAG,"MainActivity View Model Destroyed");
     }
-    public void addNoteClicked(View view) {
+    public void addNoteClicked() {
         getNavigator().addNoteClicked();
     }
 }

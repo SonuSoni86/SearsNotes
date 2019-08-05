@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="30dp"
-                    android:onClick="@{viewModel::discardBtnClicked}"
+                    android:onClick="@{()-> viewModel.discardBtnClicked()}"
                     android:src="@drawable/ic_arrow_back_black_24dp" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -81,7 +81,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="30dp"
-                    android:onClick="@{viewModel::deleteBtnClicked}"
+                    android:onClick="@{()->viewModel.deleteBtnClicked()}"
                     android:src="@drawable/ic_delete_black_24dp" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="30dp"
-                    android:onClick="@{viewModel::editBtnClicked}"
+                    android:onClick="@{()-> viewModel.editBtnClicked()}"
                     android:src="@drawable/ic_edit_black_24dp"
                     android:layout_alignParentEnd="true"
                     tools:ignore="RelativeOverlap,RtlHardcoded" />

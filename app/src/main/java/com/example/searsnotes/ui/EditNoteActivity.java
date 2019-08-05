@@ -17,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
@@ -71,15 +70,6 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     }
 
 
-    public void picImageClicked(View view) {
-        requestMultiplePermissions(IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
-        viewModel.openViewModelGalary();
-    }
-
-    public void captureImageClicked(View view) {
-        requestMultiplePermissions(IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
-      viewModel.openViewModelCamera();
-    }
 
 
 
@@ -93,7 +83,8 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
 
 
 
-    private void requestMultiplePermissions(final int requestCode) {
+    @Override
+    public void requestMultiplePermissions(final int requestCode) {
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.READ_EXTERNAL_STORAGE,
