@@ -5,6 +5,9 @@
         <variable
             name="noteObject"
             type="com.example.searsnotes.model.NotesVo" />
+        <variable
+            name="viewModel"
+            type="com.example.searsnotes.viewModels.EditNoteActivityViewModel" />
     </data>
     <RelativeLayout 
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -101,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="30dp"
-                    android:onClick="discardBtnClicked"
+                    android:onClick="@{viewModel::discardBtnClicked}"
                     android:src="@drawable/ic_cancel_white_70dp" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -111,7 +114,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="30dp"
-                    android:onClick="saveBtnClicked"
+                    android:onClick="@{viewModel::saveBtnClicked}"
                     android:src="@drawable/ic_check_white_24dp"
                     tools:ignore="RelativeOverlap" />
             </RelativeLayout>

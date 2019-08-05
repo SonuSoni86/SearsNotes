@@ -1,4 +1,4 @@
-package com.example.searsnotes.ViewModels;
+package com.example.searsnotes.viewModels;
 
 import android.app.Application;
 

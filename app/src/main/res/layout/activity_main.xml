@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.searsnotes.viewModels.MainActivityViewModel" />
+    </data>
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -21,7 +26,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:onClick="addNoteClicked"
+            android:onClick="@{viewModel::addNoteClicked}"
             android:id="@+id/add_note_btn"
             android:layout_margin="20dp"/>
 

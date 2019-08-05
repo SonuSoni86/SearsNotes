@@ -11,19 +11,18 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
 import com.example.searsnotes.Utilities.CustomCallBack;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
-import com.example.searsnotes.ViewModels.ViewNoteActivityViewModel;
+import com.example.searsnotes.navigators.ViewNoteActivityNavigator;
+import com.example.searsnotes.viewModels.ViewNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityViewNoteBinding;
 
 import javax.inject.Inject;
 
-public class ViewNoteActivity extends AppCompatActivity {
+public class ViewNoteActivity extends AppCompatActivity implements ViewNoteActivityNavigator {
 
     private int noteID;
     private LiveData<NotesVo> note;
@@ -50,16 +49,11 @@ public class ViewNoteActivity extends AppCompatActivity {
         });
         mBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(mBinding.noteTitle, this));
         mBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(mBinding.noteText, this));
+        viewModel.setNavigator(this);
+        mBinding.setViewModel(viewModel);
 
     }
 
-    public void discardBtnClicked(View view) {
-        finish();
-    }
-
-    public void editBtnClicked(View view) {
-        startActivityForResult(new Intent(ViewNoteActivity.this, EditNoteActivity.class).putExtra("id",noteID), IntentRequestCodes.UPDATE_NOTE_ACTIVITY_REQUEST);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -67,8 +61,8 @@ public class ViewNoteActivity extends AppCompatActivity {
         viewModel.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void deleteBtnClicked(View view) {
-
+    @Override
+    public void deleteBtnClicked() {
         AlertDialog.Builder confirmation = new AlertDialog.Builder(this);
         confirmation.setTitle("Confirm");
         confirmation.setMessage(" Do you really want to delete this note?");
@@ -91,5 +85,11 @@ public class ViewNoteActivity extends AppCompatActivity {
         confirmation.show();
     }
 
+    @Override
+    public void discardBtnClicked() {finish();}
 
+    @Override
+    public void editBtnClicked() {
+        startActivityForResult(new Intent(ViewNoteActivity.this, EditNoteActivity.class).putExtra("id",noteID), IntentRequestCodes.UPDATE_NOTE_ACTIVITY_REQUEST);
+    }
 }

@@ -2,10 +2,10 @@ package com.example.searsnotes.dependencyInjection;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.searsnotes.ViewModels.AddNoteActivityViewModel;
-import com.example.searsnotes.ViewModels.EditNoteActivityViewModel;
-import com.example.searsnotes.ViewModels.MainActivityViewModel;
-import com.example.searsnotes.ViewModels.ViewNoteActivityViewModel;
+import com.example.searsnotes.viewModels.AddNoteActivityViewModel;
+import com.example.searsnotes.viewModels.EditNoteActivityViewModel;
+import com.example.searsnotes.viewModels.MainActivityViewModel;
+import com.example.searsnotes.viewModels.ViewNoteActivityViewModel;
 
 import dagger.Binds;
 import dagger.Module;

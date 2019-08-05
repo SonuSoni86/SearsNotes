@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
 import com.example.searsnotes.Utilities.CustomCallBack;
-import com.example.searsnotes.ViewModels.AddNoteActivityViewModel;
+import com.example.searsnotes.viewModels.AddNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityAddNoteBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
@@ -58,19 +58,10 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
         addNoteBinding.setNoteObject(note);
         viewModel = ViewModelProviders.of(this, providerFactory).get(AddNoteActivityViewModel.class);
         viewModel.setNavigator(this);
+        addNoteBinding.setViewModel(viewModel);
     }
 
 
-    public void saveBtnClicked(View view) {
-        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri);
-        setResult(RESULT_OK,  new Intent().putExtra("note_data", noteDataBundle));
-        finish();
-    }
-
-
-    public void discardBtnClicked(View view) {
-        finish();
-    }
 
     public void picImageClicked(View view) {
         requestMultiplePermissions(IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
@@ -161,4 +152,14 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     public void setNoteImage(String uri){
         addNoteBinding.noteImage.setImageURI(Uri.parse(imageUri));
     }
+
+    @Override
+    public void saveButtonClicked() {
+        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri);
+        setResult(RESULT_OK,  new Intent().putExtra("note_data", noteDataBundle));
+        finish();
+    }
+
+    @Override
+    public void discardButtonClicked() {finish(); }
 }

@@ -1,4 +1,4 @@
-package com.example.searsnotes.ViewModels;
+package com.example.searsnotes.viewModels;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -6,21 +6,21 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
+import androidx.annotation.Nullable;import androidx.lifecycle.LiveData;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.Dao.NotesDao;
 import com.example.searsnotes.Dao.NotesDatabase;
 import com.example.searsnotes.model.NotesVo;
+import com.example.searsnotes.navigators.ViewNoteActivityNavigator;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ViewNoteActivityViewModel extends AndroidViewModel {
+public class ViewNoteActivityViewModel extends BaseViewModel<ViewNoteActivityNavigator> {
 
     private final String TAG = this.getClass().getSimpleName();
     private NotesDao notesDao;
@@ -88,5 +88,9 @@ public class ViewNoteActivityViewModel extends AndroidViewModel {
             return null;
         }
     }
+
+    public void discardBtnClicked(View view) { getNavigator().discardBtnClicked();}
+    public void editBtnClicked(View view) {getNavigator().editBtnClicked(); }
+    public void deleteBtnClicked(View view) {getNavigator().deleteBtnClicked(); }
 
 }

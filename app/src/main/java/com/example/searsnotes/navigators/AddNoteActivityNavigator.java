@@ -6,4 +6,6 @@ public interface AddNoteActivityNavigator {
     void openCamera();
 
     void setNoteImage(String uri);
+    void saveButtonClicked();
+    void discardButtonClicked();
 }

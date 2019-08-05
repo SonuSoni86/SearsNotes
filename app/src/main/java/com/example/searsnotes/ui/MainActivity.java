@@ -9,20 +9,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
 import com.example.searsnotes.databinding.ActivityMainBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.View.NoteListAdapter;
-import com.example.searsnotes.ViewModels.MainActivityViewModel;
+import com.example.searsnotes.viewModels.MainActivityViewModel;
+import com.example.searsnotes.navigators.MainActivityNavigator;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityNavigator {
 
     private MainActivityViewModel mainActivityViewModel;
     private NoteListAdapter adapter;
@@ -45,18 +46,22 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setNotelist(notesVos);
             }
         });
+        mainActivityViewModel.setNavigator(this);
+        mainBinding.setViewModel(mainActivityViewModel);
 
     }
 
-    public void addNoteClicked(View view) {
-        Intent addNoteIntent = new Intent(MainActivity.this, AddNoteActivity.class);
-        startActivityForResult(addNoteIntent, IntentRequestCodes.NEW_NOTE_ACTIVITY_REQUEST);
-    }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mainActivityViewModel.onActivityResult(requestCode,resultCode,data);
+    }
+
+    @Override
+    public void addNoteClicked() {
+        Intent addNoteIntent = new Intent(MainActivity.this, AddNoteActivity.class);
+        startActivityForResult(addNoteIntent, IntentRequestCodes.NEW_NOTE_ACTIVITY_REQUEST);
     }
 }

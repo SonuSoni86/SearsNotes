@@ -1,4 +1,4 @@
-package com.example.searsnotes.ViewModels;
+package com.example.searsnotes.viewModels;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,9 @@ import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.Dao.NotesDao;
 import com.example.searsnotes.Dao.NotesDatabase;
 import com.example.searsnotes.model.NotesVo;
+import com.example.searsnotes.navigators.MainActivityNavigator;
+import com.example.searsnotes.ui.AddNoteActivity;
+import com.example.searsnotes.ui.MainActivity;
 
 import java.util.List;
 
@@ -24,7 +28,7 @@ import javax.inject.Inject;
 
 import static android.app.Activity.RESULT_OK;
 
-public class MainActivityViewModel extends AndroidViewModel {
+public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> {
 
     private String TAG= this.getClass().getSimpleName();
     private NotesDao notesDao;
@@ -88,5 +92,8 @@ public class MainActivityViewModel extends AndroidViewModel {
     protected void onCleared() {
         super.onCleared();
         Log.i(TAG,"MainActivity View Model Destroyed");
+    }
+    public void addNoteClicked(View view) {
+        getNavigator().addNoteClicked();
     }
 }

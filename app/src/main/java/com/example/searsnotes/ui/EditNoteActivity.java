@@ -26,7 +26,7 @@ import com.example.searsnotes.Utilities.CustomCallBack;
 import com.example.searsnotes.databinding.ActivityEditNoteBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
-import com.example.searsnotes.ViewModels.EditNoteActivityViewModel;
+import com.example.searsnotes.viewModels.EditNoteActivityViewModel;
 import com.example.searsnotes.navigators.EditNoteActivityNavigator;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -67,13 +67,9 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
             }
         });
         viewModel.setNavigator(this);
+        editNoteBinding.setViewModel(viewModel);
     }
 
-    public void saveBtnClicked(View view) {
-        Bundle noteDataBundle = viewModel.makeBundle(noteID,editNoteBinding.noteTitle,editNoteBinding.noteText,imageUri);
-        setResult(RESULT_OK,new Intent().putExtra("note_data",noteDataBundle));
-        finish();
-    }
 
     public void picImageClicked(View view) {
         requestMultiplePermissions(IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
@@ -85,7 +81,6 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
       viewModel.openViewModelCamera();
     }
 
-    public void discardBtnClicked(View view) { finish();}
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -165,5 +160,15 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     public void setNoteImage(String uri){
         editNoteBinding.noteImage.setImageURI(Uri.parse(imageUri));
     }
+
+    @Override
+    public void saveButtonClicked() {
+        Bundle noteDataBundle = viewModel.makeBundle(noteID,editNoteBinding.noteTitle,editNoteBinding.noteText,imageUri);
+        setResult(RESULT_OK,new Intent().putExtra("note_data",noteDataBundle));
+        finish();
+    }
+
+    @Override
+    public void discardButtonClicked() {finish(); }
 
 }
