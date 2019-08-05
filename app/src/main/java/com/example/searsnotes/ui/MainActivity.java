@@ -1,4 +1,4 @@
-package com.example.searsnotes;
+package com.example.searsnotes.ui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import com.example.searsnotes.Constants.IntentRequestCodes;
+import com.example.searsnotes.R;
 import com.example.searsnotes.databinding.ActivityMainBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addNoteClicked(View view) {
-        Intent addNoteIntent = new Intent(MainActivity.this,AddNoteActivity.class);
+        Intent addNoteIntent = new Intent(MainActivity.this, AddNoteActivity.class);
         startActivityForResult(addNoteIntent, IntentRequestCodes.NEW_NOTE_ACTIVITY_REQUEST);
     }
 

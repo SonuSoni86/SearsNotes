@@ -10,11 +10,14 @@ import android.util.Log;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 
 import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.navigators.AddNoteActivityNavigator;
+
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -46,13 +49,15 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         return  noteDataBundle;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String onActivityResult(int requestCode, int resultCode, Intent data) {
         String imageUri = null;
         switch (requestCode){
             case IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST:
                 if(resultCode==RESULT_OK)
                 {
-                    Bitmap tempBmp = (Bitmap)data.getExtras().get("data");
+                    Bitmap tempBmp = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
+                    assert tempBmp != null;
                     imageUri= ImportantMethods.getImageUri(getApplication().getApplicationContext(),tempBmp).toString();
                 }
                 break;
@@ -61,6 +66,7 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
                 if(resultCode==RESULT_OK)
                 {
                     Uri tempUri = data.getData();
+                    assert tempUri != null;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         getApplication().getContentResolver().takePersistableUriPermission(tempUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     }

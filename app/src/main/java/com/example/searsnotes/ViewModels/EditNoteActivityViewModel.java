@@ -6,12 +6,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
@@ -21,7 +20,8 @@ import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.navigators.EditNoteActivityNavigator;
 
-import java.io.IOException;
+
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -29,12 +29,11 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
 
     private final String TAG = this.getClass().getSimpleName();
     private NotesDao notesDao;
-    private NotesDatabase notesDatabaseInstance;
 
 
     public EditNoteActivityViewModel(@NonNull Application application) {
         super(application);
-        notesDatabaseInstance = NotesDatabase.getNotesDatabaseInstance(application);
+        NotesDatabase notesDatabaseInstance = NotesDatabase.getNotesDatabaseInstance(application);
         notesDao = notesDatabaseInstance.notesDao();
     }
     public LiveData<NotesVo> getNote(int noteId){
@@ -47,7 +46,7 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         Log.i(TAG,"EditNoteActivity destroyed");
     }
 
-    public Bundle makeBundle(int noteID, EditText noteTitle, EditText noteText, String imageUri, String gettime) {
+    public Bundle makeBundle(int noteID, EditText noteTitle, EditText noteText, String imageUri) {
         Bundle noteDataBundle = new Bundle();
         noteDataBundle.putInt("id",noteID);
         noteDataBundle.putString("title",noteTitle.getText().toString().trim());
@@ -62,13 +61,15 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         return  noteDataBundle;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String onActivityResult(int requestCode, int resultCode, Intent data, String oldImageUri) {
         String imageUri = oldImageUri;
         switch (requestCode){
             case IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST:
                 if(resultCode==RESULT_OK)
                 {
-                    Bitmap tempBmp = (Bitmap)data.getExtras().get("data");
+                    Bitmap tempBmp = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
+                    assert tempBmp != null;
                     imageUri= ImportantMethods.getImageUri(getApplication().getApplicationContext(),tempBmp).toString();
                 }
                 break;
@@ -77,7 +78,9 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
                 if(resultCode==RESULT_OK)
                 {
                     Uri tempUri = data.getData();
+                    assert tempUri != null;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
                         getApplication().getContentResolver().takePersistableUriPermission(tempUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     }
                     imageUri = tempUri.toString();
@@ -94,8 +97,5 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         if(ImportantMethods.hasAllPermissions(getApplication().getApplicationContext())){getNavigator().openCamera();}
     }
 
-    public void checkImageUri(String imageUri) {
-        if(imageUri!=null){getNavigator().setNoteImage(imageUri);}
-    }
 
 }

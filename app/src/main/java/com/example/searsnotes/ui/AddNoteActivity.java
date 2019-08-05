@@ -1,6 +1,7 @@
-package com.example.searsnotes;
+package com.example.searsnotes.ui;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
+import com.example.searsnotes.R;
 import com.example.searsnotes.Utilities.CustomCallBack;
 import com.example.searsnotes.ViewModels.AddNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityAddNoteBinding;
@@ -82,6 +84,7 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -1,10 +1,10 @@
 package com.example.searsnotes.dependencyInjection;
 
 
-import com.example.searsnotes.AddNoteActivity;
-import com.example.searsnotes.EditNoteActivity;
-import com.example.searsnotes.MainActivity;
-import com.example.searsnotes.ViewNoteActivity;
+import com.example.searsnotes.ui.AddNoteActivity;
+import com.example.searsnotes.ui.EditNoteActivity;
+import com.example.searsnotes.ui.MainActivity;
+import com.example.searsnotes.ui.ViewNoteActivity;
 
 import dagger.Module;
 

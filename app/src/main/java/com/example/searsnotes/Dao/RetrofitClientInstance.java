@@ -16,8 +16,8 @@ public class RetrofitClientInstance {
 
     private static final String BASE_URL = "https://wordsapiv1.p.mashape.com/";
     private static Retrofit retrofitInstance;
-    static HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-    static OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+    private static HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+    private static OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
         @NotNull
         @Override
         public Response intercept(@NotNull Chain chain) throws IOException {

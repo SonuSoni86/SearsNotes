@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.searsnotes.databinding.RowOfNotesBinding;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.R;
-import com.example.searsnotes.ViewNoteActivity;
+import com.example.searsnotes.ui.ViewNoteActivity;
 
 import java.util.List;
 

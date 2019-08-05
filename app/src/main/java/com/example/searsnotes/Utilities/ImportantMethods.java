@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.example.searsnotes.Dao.RetrofitClientInstance;
@@ -87,7 +88,7 @@ public class ImportantMethods {
 
 
                 @Override
-                public void onFailure( Call<DictionaryMeaning> call, Throwable t) {
+                public void onFailure(@NotNull  Call<DictionaryMeaning> call, @NonNull Throwable t) {
                     progressDialog.dismiss();
                     Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
                 }

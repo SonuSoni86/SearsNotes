@@ -1,5 +1,6 @@
 package com.example.searsnotes.ViewModels;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,7 +16,6 @@ import androidx.lifecycle.LiveData;
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.Dao.NotesDao;
 import com.example.searsnotes.Dao.NotesDatabase;
-import com.example.searsnotes.MainActivity;
 import com.example.searsnotes.model.NotesVo;
 
 import java.util.List;
@@ -26,16 +26,15 @@ import static android.app.Activity.RESULT_OK;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
-    public String TAG= this.getClass().getSimpleName();
+    private String TAG= this.getClass().getSimpleName();
     private NotesDao notesDao;
-    private NotesDatabase notesDatabaseInstace;
     private LiveData<List<NotesVo>> listOfNotes;
 
     @Inject
-    public MainActivityViewModel(@NonNull Application application) {
+    MainActivityViewModel(@NonNull Application application) {
         super(application);
 
-        notesDatabaseInstace = NotesDatabase.getNotesDatabaseInstance(application);
+        NotesDatabase notesDatabaseInstace = NotesDatabase.getNotesDatabaseInstance(application);
         notesDao = notesDatabaseInstace.notesDao();
         listOfNotes = notesDao.getListOfNotes();
     }
@@ -45,15 +44,16 @@ public class MainActivityViewModel extends AndroidViewModel {
             return listOfNotes;
     }
 
-    public void addNote(NotesVo note) {
+    private void addNote(NotesVo note) {
         new AddNoteAsyncTask(notesDao).execute(note);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class AddNoteAsyncTask extends AsyncTask<NotesVo, Void, Void> {
 
         NotesDao mNotesDao;
 
-        public AddNoteAsyncTask(NotesDao notesDao) {
+        AddNoteAsyncTask(NotesDao notesDao) {
             mNotesDao = notesDao;
         }
 
@@ -67,8 +67,10 @@ public class MainActivityViewModel extends AndroidViewModel {
    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode== IntentRequestCodes.NEW_NOTE_ACTIVITY_REQUEST){
             if(resultCode==RESULT_OK){
+                assert data != null;
                 Bundle dataBundle = data.getBundleExtra("note_data");
                 NotesVo note = new NotesVo();
+                assert dataBundle != null;
                 note.setNoteTitle(dataBundle.getString("title"));
                 note.setNoteText(dataBundle.getString("text"));
                 note.setNoteImage(dataBundle.getString("uri"));

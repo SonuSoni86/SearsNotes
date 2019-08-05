@@ -2,7 +2,6 @@ package com.example.searsnotes.dependencyInjection;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.searsnotes.EditNoteActivity;
 import com.example.searsnotes.ViewModels.AddNoteActivityViewModel;
 import com.example.searsnotes.ViewModels.EditNoteActivityViewModel;
 import com.example.searsnotes.ViewModels.MainActivityViewModel;

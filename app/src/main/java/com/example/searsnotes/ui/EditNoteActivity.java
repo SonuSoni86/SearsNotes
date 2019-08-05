@@ -1,4 +1,4 @@
-package com.example.searsnotes;
+package com.example.searsnotes.ui;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -21,11 +21,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
+import com.example.searsnotes.R;
 import com.example.searsnotes.Utilities.CustomCallBack;
 import com.example.searsnotes.databinding.ActivityEditNoteBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
-import com.example.searsnotes.Utilities.ImportantMethods;
 import com.example.searsnotes.ViewModels.EditNoteActivityViewModel;
 import com.example.searsnotes.navigators.EditNoteActivityNavigator;
 import com.karumi.dexter.Dexter;
@@ -52,7 +52,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        editNoteBinding = DataBindingUtil.setContentView(this,R.layout.activity_edit_note);
+        editNoteBinding = DataBindingUtil.setContentView(this, R.layout.activity_edit_note);
         editNoteBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(editNoteBinding.noteTitle,this));
         editNoteBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(editNoteBinding.noteText,this));
 
@@ -70,7 +70,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     }
 
     public void saveBtnClicked(View view) {
-        Bundle noteDataBundle = viewModel.makeBundle(noteID,editNoteBinding.noteTitle,editNoteBinding.noteText,imageUri,ImportantMethods.gettime());
+        Bundle noteDataBundle = viewModel.makeBundle(noteID,editNoteBinding.noteTitle,editNoteBinding.noteText,imageUri);
         setResult(RESULT_OK,new Intent().putExtra("note_data",noteDataBundle));
         finish();
     }
@@ -88,6 +88,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     public void discardBtnClicked(View view) { finish();}
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -1,32 +1,29 @@
 package com.example.searsnotes;
 
 import androidx.test.espresso.Espresso;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.rule.ActivityTestRule;
 
-import org.junit.After;
-import org.junit.Before;
+import com.example.searsnotes.ui.AddNoteActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.*;
 
 public class AddNoteActivityTest {
     @Rule
-    public ActivityTestRule<AddNoteActivity> activityTestRule = new ActivityTestRule<AddNoteActivity>(AddNoteActivity.class);
+    public ActivityTestRule<AddNoteActivity> activityTestRule = new ActivityTestRule<>(AddNoteActivity.class);
 
-    private String title = "test title";
-    private String text = "test Text";
+
 
     @Test
     public void testSaveButton() {
+        String title = "test title";
+         String text = "test Text";
         Espresso.onView(withId(R.id.note_title)).perform(typeText(title));
         Espresso.onView(withId(R.id.note_text)).perform(typeText(text));
         Espresso.closeSoftKeyboard();
@@ -39,13 +36,4 @@ public class AddNoteActivityTest {
         Espresso.onView(withId(R.id.discard_btn)).perform(click());
     }
 
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
 }

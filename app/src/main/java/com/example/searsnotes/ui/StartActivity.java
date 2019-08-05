@@ -1,4 +1,4 @@
-package com.example.searsnotes;
+package com.example.searsnotes.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.searsnotes.R;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -24,7 +26,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                startActivity(new Intent(StartActivity.this,MainActivity.class));
+                startActivity(new Intent(StartActivity.this, MainActivity.class));
                 finish();
             }
         },800);

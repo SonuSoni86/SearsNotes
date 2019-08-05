@@ -1,4 +1,4 @@
-package com.example.searsnotes;
+package com.example.searsnotes.ui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
+import com.example.searsnotes.R;
 import com.example.searsnotes.Utilities.CustomCallBack;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;

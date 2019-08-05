@@ -14,15 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartActivity"><intent-filter>
+        <activity android:name=".ui.StartActivity"><intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter></activity>
-        <activity android:name=".EditNoteActivity" />
-        <activity android:name=".ViewNoteActivity" />
-        <activity android:name=".AddNoteActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.EditNoteActivity" />
+        <activity android:name=".ui.ViewNoteActivity" />
+        <activity android:name=".ui.AddNoteActivity" />
+        <activity android:name=".ui.MainActivity">
 
         </activity>
     </application>
