@@ -27,7 +27,6 @@ public interface NotesDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateNote(NotesVo note);
 
-
     @Delete
     void deleteNote(NotesVo note);
 }

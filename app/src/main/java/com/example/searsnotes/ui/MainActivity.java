@@ -1,11 +1,14 @@
 package com.example.searsnotes.ui;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +22,8 @@ import com.example.searsnotes.View.NoteListAdapter;
 import com.example.searsnotes.viewModels.MainActivityViewModel;
 import com.example.searsnotes.navigators.MainActivityNavigator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityNavig
 
     private MainActivityViewModel mainActivityViewModel;
     private NoteListAdapter adapter;
+    private List<NotesVo> upDatedList = new ArrayList<>();
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -44,10 +50,33 @@ public class MainActivity extends AppCompatActivity implements MainActivityNavig
             @Override
             public void onChanged(List<NotesVo> notesVos) {
                 adapter.setNotelist(notesVos);
+                upDatedList = notesVos;
             }
         });
         mainActivityViewModel.setNavigator(this);
         mainBinding.setViewModel(mainActivityViewModel);
+        mainActivityViewModel.hideFab(mainBinding.notesView,mainBinding.addNoteBtn);
+
+        ItemTouchHelper itemTouchHelper  = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP|ItemTouchHelper.DOWN,0) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
+              NotesVo note1 = upDatedList.get(dragged.getAdapterPosition()),note2 = upDatedList.get(target.getAdapterPosition());
+                Collections.swap(upDatedList,dragged.getAdapterPosition(),target.getAdapterPosition());
+                adapter.notifyItemMoved(dragged.getAdapterPosition(),target.getAdapterPosition());
+                int tempId = note1.getNoteID();
+                note1.setNoteID(note2.getNoteID());
+                note2.setNoteID(tempId);
+                mainActivityViewModel.updateNote(note1);
+                mainActivityViewModel.updateNote(note2);
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(mainBinding.notesView);
 
     }
 
@@ -64,4 +93,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityNavig
         Intent addNoteIntent = new Intent(MainActivity.this, AddNoteActivity.class);
         startActivityForResult(addNoteIntent, IntentRequestCodes.NEW_NOTE_ACTIVITY_REQUEST);
     }
+
+
+
+
 }
