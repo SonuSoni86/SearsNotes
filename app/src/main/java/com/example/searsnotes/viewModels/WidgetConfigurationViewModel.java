@@ -17,6 +17,7 @@ import javax.inject.Inject;
 public class WidgetConfigurationViewModel extends AndroidViewModel {
     private String TAG= this.getClass().getSimpleName();
     private NotesDao notesDao;
+
     private LiveData<List<NotesVo>> listOfNotes;
 
     @Inject
