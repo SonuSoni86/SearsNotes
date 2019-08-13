@@ -4,6 +4,7 @@
     android:minHeight="180dp"
     android:minWidth="320dp"
     android:updatePeriodMillis="3600000"
+    android:previewImage="@drawable/notewidgetpreview"
     android:widgetCategory="home_screen">
 
 </appwidget-provider>

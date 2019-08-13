@@ -1,32 +1,19 @@
 package com.example.searsnotes.widgets;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+
 
 import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.RemoteViews;
 
 import com.example.searsnotes.R;
-import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
-import com.example.searsnotes.model.NotesVo;
-import com.example.searsnotes.viewModels.MainActivityViewModel;
-import com.example.searsnotes.viewModels.WidgetConfigurationViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
 
 public class WidgetConfigurationActivity extends AppCompatActivity {
 
-    @Inject
-    ViewModelProviderFactory providerFactory;
-    private WidgetConfigurationViewModel widgetConfigurationViewModel;
-    private List<String> upDatedList = new ArrayList<>();
 
-    public static final String SHARED_PREFS = "prefs";
-    public static final String KEY_BUTTON_TEXT = "keyButtonText";
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
 
@@ -34,16 +21,31 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widget_configuration);
-        widgetConfigurationViewModel = ViewModelProviders.of(this,providerFactory).get(WidgetConfigurationViewModel.class);
-        widgetConfigurationViewModel.getListOfNotes().observe(this, new Observer<List<NotesVo>>() {
-            @Override
-            public void onChanged(List<NotesVo> notesVos) {
-                for(int i=0;i<5;i++){
-                    upDatedList.add(notesVos.get(i).getNoteTitle());
-                }
-            }
-        });
+        Intent configIntent = getIntent();
+        Bundle extras = configIntent.getExtras();
+        if(extras!=null){
+            appWidgetId=extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
 
+        Intent resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
+        setResult(RESULT_CANCELED,resultValue);
+        if(appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID){
+            finish();
+        }
+        setWidget();
+    }
 
+    private void setWidget() {
+        AppWidgetManager manager = AppWidgetManager.getInstance(this);
+
+        Intent serviceIntent= new Intent(this,WidgetService.class);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+        serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
+        RemoteViews views = new RemoteViews(this.getPackageName(),R.layout.widget_layout);
+        views.setRemoteAdapter(R.id.listView,serviceIntent);
+
+        manager.updateAppWidget(appWidgetId,views);
     }
 }
