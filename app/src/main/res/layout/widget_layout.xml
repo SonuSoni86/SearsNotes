@@ -5,15 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-   <FrameLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-       <ListView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:background="@color/colorPrimary"
-           tools:listitem="@layout/widget_row_item"
-           android:id="@+id/listView"/>
-   </FrameLayout>
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        tools:listitem="@layout/widget_row_item" />
 
 </RelativeLayout>
