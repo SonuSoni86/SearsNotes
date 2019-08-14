@@ -54,12 +54,48 @@
                     android:textIsSelectable="true"
                     tools:ignore="HardcodedText"
                     android:importantForAutofill="no" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/note_text"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/middleLayout"
+                    android:gravity="center_horizontal">
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Turn On Reminder"
+                        android:textSize="12dp"
+                        android:id="@+id/remindercheckbox"
+                        android:layout_centerVertical="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:layout_toRightOf="@id/remindercheckbox"
+                        android:onClick="@{()->viewModel.chooseTimeClicked()}"
+                        android:text="Choose Time"
+                        android:layout_marginHorizontal="10dp"
+                        android:padding="5dp"
+                        android:id="@+id/reminderTime"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:layout_toRightOf="@id/reminderTime"
+                        android:text="Choose Date"
+                        android:padding="5dp"
+                        android:id="@+id/reminderDate"
+                        />
+                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/note_image"
                     android:layout_width="250dp"
                     android:layout_height="250dp"
-                    android:layout_below="@id/note_text"
+                    android:layout_below="@id/middleLayout"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="50dp"
                     android:src="@drawable/note_thumbnail"
@@ -69,7 +105,7 @@
                     android:id="@+id/pic_note_image"
                     android:layout_width="250dp"
                     android:layout_height="125dp"
-                    android:layout_below="@id/note_text"
+                    android:layout_below="@id/middleLayout"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="50dp"
                     android:background="@drawable/border"

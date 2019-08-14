@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
@@ -34,6 +36,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -51,18 +54,23 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     private String hour,minute;
     private Date day;
     private boolean isReminderOn = false;
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addNoteBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_note);
         imageUri = null;
+        calendar = Calendar.getInstance();
         addNoteBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(addNoteBinding.noteTitle, this));
         addNoteBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(addNoteBinding.noteText, this));
         addNoteBinding.setNoteObject(note);
         viewModel = ViewModelProviders.of(this, providerFactory).get(AddNoteActivityViewModel.class);
         viewModel.setNavigator(this);
         addNoteBinding.setViewModel(viewModel);
+        addNoteBinding.reminderTime.setText(""+ Calendar.HOUR +":"+ Calendar.MINUTE);
+        addNoteBinding.reminderDate.setText(""+ Calendar.DATE +"-"+ Calendar.MONTH +"-"+ Calendar.YEAR);
+
     }
 
 
@@ -151,6 +159,11 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
     @Override
     public void setReminder() {
+        AlertDialog.Builder dialog  = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.reminderdialog_layout,null);
+        dialog.setTitle("Set time and Date");
+        dialog.setView(view);
+        dialog.show();
     }
 
     @Override
