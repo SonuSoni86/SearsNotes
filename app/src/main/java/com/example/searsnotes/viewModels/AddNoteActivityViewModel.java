@@ -102,5 +102,8 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         getNavigator().requestMultiplePermissions(IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
         openViewModelCamera();
     }
+    public void chooseTimeClicked(){
+        getNavigator().setReminder();
+    }
 
 }

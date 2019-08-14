@@ -34,6 +34,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,6 +48,9 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     ViewModelProviderFactory providerFactory;
     private AddNoteActivityViewModel viewModel;
     boolean flag = false;
+    private String hour,minute;
+    private Date day;
+    private boolean isReminderOn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +147,10 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
         }
+    }
+
+    @Override
+    public void setReminder() {
     }
 
     @Override

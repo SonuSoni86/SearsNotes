@@ -13,6 +13,7 @@ import com.example.searsnotes.Dao.NotesDatabase;
 import com.example.searsnotes.R;
 import com.example.searsnotes.model.NotesVo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WidgetService extends RemoteViewsService {
@@ -28,23 +29,23 @@ public class WidgetService extends RemoteViewsService {
        // private int appWidgetId;
         private List<NotesVo> notesVoList;
         private NotesDao notesDao;
+        List<NotesVo> tempNotesVoList = new ArrayList<>();
 
-         WidgetItemFactory(Context context, Intent intent) {
-            NotesDatabase notesDatabaseInstance = NotesDatabase.getNotesDatabaseInstance(getApplicationContext());
-            notesDao = notesDatabaseInstance.notesDao();
+        WidgetItemFactory(Context context, Intent intent) {
+
             this.context = context;
            // this.appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
         @Override
         public void onCreate() {
-
+            NotesDatabase notesDatabaseInstance = NotesDatabase.getNotesDatabaseInstance(getApplicationContext());
+            notesDao = notesDatabaseInstance.notesDao();
         }
 
         @Override
         public void onDataSetChanged() {
-            notesVoList = notesDao.getListOfWidgetNotes();
-
+         notesVoList = notesDao.getListOfWidgetNotes();
         }
 
         @Override
