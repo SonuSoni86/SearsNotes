@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -46,7 +48,7 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         Log.i(TAG,"EditNoteActivity destroyed");
     }
 
-    public Bundle makeBundle(int noteID, EditText noteTitle, EditText noteText, String imageUri) {
+    public Bundle makeBundle(int noteID, EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox) {
         Bundle noteDataBundle = new Bundle();
         noteDataBundle.putInt("id",noteID);
         noteDataBundle.putString("title",noteTitle.getText().toString().trim());
@@ -58,6 +60,9 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
             noteDataBundle.putString("uri",imageUri);
         }
         noteDataBundle.putString("time", ImportantMethods.gettime());
+        noteDataBundle.putString("reminderTime", reminderTime.getText().toString());
+        noteDataBundle.putString("reminderDate",reminderDate.getText().toString());
+        noteDataBundle.putBoolean("reminderStatus", reminderCheckBox.isChecked());
         return  noteDataBundle;
     }
 
@@ -110,6 +115,13 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
     public void captureImageClicked(){
         getNavigator().requestMultiplePermissions(IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
         openViewModelCamera();
+    }
+
+    public void chooseTimeClicked(){
+        getNavigator().setTime();
+    }
+    public void chooseDateClicked(){
+        getNavigator().setDate();
     }
 
 }

@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,8 +18,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
+import android.view.animation.RotateAnimation;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
@@ -51,8 +56,8 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     ViewModelProviderFactory providerFactory;
     private AddNoteActivityViewModel viewModel;
     boolean flag = false;
-    private String hour,minute;
-    private Date day;
+    private String reminderTim;
+    private String reminderDat;
     private boolean isReminderOn = false;
     private Calendar calendar;
 
@@ -68,9 +73,8 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
         viewModel = ViewModelProviders.of(this, providerFactory).get(AddNoteActivityViewModel.class);
         viewModel.setNavigator(this);
         addNoteBinding.setViewModel(viewModel);
-        addNoteBinding.reminderTime.setText(""+ Calendar.HOUR +":"+ Calendar.MINUTE);
-        addNoteBinding.reminderDate.setText(""+ Calendar.DATE +"-"+ Calendar.MONTH +"-"+ Calendar.YEAR);
-
+        addNoteBinding.reminderTime.setText(""+calendar.get(Calendar.HOUR)+":"+ calendar.get(Calendar.MINUTE)+" "+(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM"));
+        addNoteBinding.reminderDate.setText(""+ calendar.get(Calendar.DATE)+"-"+ calendar.get(Calendar.MONTH) +"-"+ calendar.get(Calendar.YEAR));
     }
 
 
@@ -158,12 +162,29 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     }
 
     @Override
-    public void setReminder() {
-        AlertDialog.Builder dialog  = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.reminderdialog_layout,null);
-        dialog.setTitle("Set time and Date");
-        dialog.setView(view);
+    public void setTime() {
+        TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                reminderTim =""+hour+":"+minute+" "+(timePicker.getCurrentHour().intValue()>12?"PM":"AM");
+                addNoteBinding.reminderTime.setText(reminderTim);
+            }
+        },calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE),false);
         dialog.show();
+    }
+    @Override
+    public void setDate() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int date, int month, int year) {
+                reminderDat = ""+date+"-"+month+"-"+year;
+                addNoteBinding.reminderDate.setText(""+date+"-"+month+"-"+year);
+            }
+        },calendar.get(Calendar.DATE),calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR));
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.add(Calendar.DATE,-1);
+        datePickerDialog.getDatePicker().setMinDate(calendar1.getTimeInMillis());
+        datePickerDialog.show();
     }
 
     @Override
@@ -173,7 +194,7 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
     @Override
     public void saveButtonClicked() {
-        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri);
+        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri,addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox);
         setResult(RESULT_OK,  new Intent().putExtra("note_data", noteDataBundle));
         finish();
     }

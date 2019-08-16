@@ -6,7 +6,8 @@ public interface AddNoteActivityNavigator {
     void requestMultiplePermissions(int requestCode);
     void openGalary();
     void openCamera();
-    void setReminder();
+    void setDate();
+    void setTime();
 
     void setNoteImage(String uri);
     void saveButtonClicked();

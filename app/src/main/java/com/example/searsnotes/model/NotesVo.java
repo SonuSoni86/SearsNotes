@@ -19,7 +19,36 @@ public class NotesVo {
     private String noteTime;
     @ColumnInfo (name = "Note_Image")
     private String noteImage;
+    @ColumnInfo (name = "Reminder_Time")
+    private String noteReminderTime;
+    @ColumnInfo (name = "Reminder_Date")
+    private String noteReminderDate;
+    @ColumnInfo (name = "Reminder_status")
+    private boolean noteReminderStatus;
 
+    public boolean isNoteReminderStatus() {
+        return noteReminderStatus;
+    }
+
+    public void setNoteReminderStatus(boolean noteReminderStatus) {
+        this.noteReminderStatus = noteReminderStatus;
+    }
+
+    public String getNoteReminderTime() {
+        return noteReminderTime;
+    }
+
+    public void setNoteReminderTime(String noteReminderTime) {
+        this.noteReminderTime = noteReminderTime;
+    }
+
+    public String getNoteReminderDate() {
+        return noteReminderDate;
+    }
+
+    public void setNoteReminderDate(String noteReminderDate) {
+        this.noteReminderDate = noteReminderDate;
+    }
 
     public int getNoteID() {
         return noteID;

@@ -85,6 +85,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/border"
                         android:layout_toRightOf="@id/reminderTime"
+                        android:onClick="@{()->viewModel.chooseDateClicked()}"
                         android:text="Choose Date"
                         android:padding="5dp"
                         android:id="@+id/reminderDate"

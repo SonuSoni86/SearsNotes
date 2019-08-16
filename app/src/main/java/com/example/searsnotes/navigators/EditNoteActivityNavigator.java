@@ -7,4 +7,8 @@ public interface EditNoteActivityNavigator {
     void requestMultiplePermissions(int requestCode);
     void saveButtonClicked();
     void discardButtonClicked();
+
+    void setTime();
+
+    void setDate();
 }

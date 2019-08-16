@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +19,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
@@ -35,6 +39,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,6 +52,10 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     ViewModelProviderFactory providerFactory;
     private EditNoteActivityViewModel viewModel;
     private ActivityEditNoteBinding editNoteBinding;
+    private String reminderTim;
+    private String reminderDat;
+    private boolean isReminderOn = false;
+    private Calendar calendar;
 
 
     @Override
@@ -54,7 +64,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
         editNoteBinding = DataBindingUtil.setContentView(this, R.layout.activity_edit_note);
         editNoteBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(editNoteBinding.noteTitle,this));
         editNoteBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(editNoteBinding.noteText,this));
-
+        calendar = Calendar.getInstance();
         noteID = getIntent().getIntExtra("id",-1);
         viewModel = ViewModelProviders.of(this,providerFactory).get(EditNoteActivityViewModel.class);
         LiveData<NotesVo> note = viewModel.getNote(noteID);
@@ -67,6 +77,9 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
         });
         viewModel.setNavigator(this);
         editNoteBinding.setViewModel(viewModel);
+      //  editNoteBinding.reminderTime.setText(""+calendar.get(Calendar.HOUR)+":"+ calendar.get(Calendar.MINUTE)+" "+(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM"));
+      //  editNoteBinding.reminderDate.setText(""+ calendar.get(Calendar.DATE)+"-"+ calendar.get(Calendar.MONTH) +"-"+ calendar.get(Calendar.YEAR));
+
     }
 
 
@@ -154,7 +167,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
 
     @Override
     public void saveButtonClicked() {
-        Bundle noteDataBundle = viewModel.makeBundle(noteID,editNoteBinding.noteTitle,editNoteBinding.noteText,imageUri);
+        Bundle noteDataBundle = viewModel.makeBundle(noteID,editNoteBinding.noteTitle,editNoteBinding.noteText,imageUri,editNoteBinding.reminderTime,editNoteBinding.reminderDate,editNoteBinding.remindercheckbox);
         setResult(RESULT_OK,new Intent().putExtra("note_data",noteDataBundle));
         finish();
     }
@@ -162,4 +175,27 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     @Override
     public void discardButtonClicked() {finish(); }
 
+    @Override
+    public void setTime() {
+        TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                reminderTim = ""+hour+":"+minute+" "+(timePicker.getCurrentHour().intValue()>12?"PM":"AM");
+                editNoteBinding.reminderTime.setText(reminderTim);
+
+            }
+        },calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE),false);
+        dialog.show();
+    }
+    @Override
+    public void setDate() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int date, int month, int year) {
+                reminderDat = ""+date+"-"+month+"-"+year;
+                editNoteBinding.reminderDate.setText(""+date+"-"+month+"-"+year);
+            }
+        },calendar.get(Calendar.DATE),calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR));
+        datePickerDialog.show();
+    }
 }

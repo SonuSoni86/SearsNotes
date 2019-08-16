@@ -48,6 +48,9 @@ public class ViewNoteActivityViewModel extends BaseViewModel<ViewNoteActivityNav
                 notesVo.setNoteText(dataBundle.getString("text"));
                 notesVo.setNoteImage(dataBundle.getString("uri"));
                 notesVo.setNoteTime(dataBundle.getString("time"));
+                notesVo.setNoteReminderTime(dataBundle.getString("reminderTime"));
+                notesVo.setNoteReminderDate(dataBundle.getString("reminderDate"));
+                notesVo.setNoteReminderStatus(dataBundle.getBoolean("reminderStatus"));
                 updateNote(notesVo);
                Toast.makeText(getApplication().getApplicationContext(), "Edited note saved", Toast.LENGTH_LONG).show();
 

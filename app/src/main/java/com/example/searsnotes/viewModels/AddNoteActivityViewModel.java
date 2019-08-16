@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -35,7 +37,7 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         Log.d(TAG, "Add note ACtivity destroyed ");
     }
 
-    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri) {
+    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox) {
         Bundle noteDataBundle = new Bundle();
         noteDataBundle.putString("title",noteTitle.getText().toString().trim());
         noteDataBundle.putString("text",noteText.getText().toString().trim());
@@ -46,6 +48,9 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
             noteDataBundle.putString("uri",imageUri);
         }
         noteDataBundle.putString("time", ImportantMethods.gettime());
+        noteDataBundle.putString("reminderTime", reminderTime.getText().toString());
+        noteDataBundle.putString("reminderDate",reminderDate.getText().toString());
+        noteDataBundle.putBoolean("reminderStatus", reminderCheckBox.isChecked());
         return  noteDataBundle;
     }
 
@@ -103,7 +108,10 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         openViewModelCamera();
     }
     public void chooseTimeClicked(){
-        getNavigator().setReminder();
+        getNavigator().setTime();
+    }
+    public void chooseDateClicked(){
+        getNavigator().setDate();
     }
 
 }
