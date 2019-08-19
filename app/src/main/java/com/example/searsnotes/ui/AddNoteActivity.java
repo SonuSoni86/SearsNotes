@@ -182,7 +182,7 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
             }
         },calendar.get(Calendar.DATE),calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR));
         Calendar calendar1 = Calendar.getInstance();
-        calendar1.add(Calendar.DATE,-1);
+        calendar1.add(Calendar.DATE,0);
         datePickerDialog.getDatePicker().setMinDate(calendar1.getTimeInMillis());
         datePickerDialog.show();
     }
@@ -194,6 +194,8 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
     @Override
     public void saveButtonClicked() {
+        int reminderId=  viewModel.setReminder(addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox);
+        Toast.makeText(getApplicationContext(),""+reminderId,Toast.LENGTH_LONG).show();
         Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri,addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox);
         setResult(RESULT_OK,  new Intent().putExtra("note_data", noteDataBundle));
         finish();

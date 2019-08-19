@@ -21,7 +21,7 @@ public class WidgetConfigurationViewModel extends AndroidViewModel {
     private LiveData<List<NotesVo>> listOfNotes;
 
     @Inject
-    WidgetConfigurationViewModel(@NonNull Application application) {
+   public WidgetConfigurationViewModel(@NonNull Application application) {
         super(application);
 
         NotesDatabase notesDatabaseInstace = NotesDatabase.getNotesDatabaseInstance(application);

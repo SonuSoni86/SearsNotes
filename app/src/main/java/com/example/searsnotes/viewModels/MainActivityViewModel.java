@@ -34,7 +34,7 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
     private LiveData<List<NotesVo>> listOfNotes;
 
     @Inject
-    MainActivityViewModel(@NonNull Application application) {
+    public MainActivityViewModel(@NonNull Application application) {
         super(application);
 
         NotesDatabase notesDatabaseInstace = NotesDatabase.getNotesDatabaseInstance(application);

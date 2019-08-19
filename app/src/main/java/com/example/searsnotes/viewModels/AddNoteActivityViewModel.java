@@ -114,4 +114,11 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         getNavigator().setDate();
     }
 
+    public int setReminder(TextView reminderTime, TextView reminderDate, CheckBox remindercheckbox) {
+        String time = reminderTime.getText().toString().trim();
+        String date = reminderDate.getText().toString().trim();
+        int hour = Integer.parseInt(time.substring(0,time.indexOf(":")));
+        int minute = Integer.parseInt(time.substring(time.indexOf(":")+1,time.indexOf(" ")));
+        return minute;
+    }
 }

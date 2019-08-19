@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityNavig
         });
         itemTouchHelper.attachToRecyclerView(mainBinding.notesView);
 
+
     }
 
 

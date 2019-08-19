@@ -68,7 +68,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public RowOfNotesBinding rowOfNotesBinding;
+        RowOfNotesBinding rowOfNotesBinding;
 
 
         ViewHolder(@NonNull RowOfNotesBinding itemView) {

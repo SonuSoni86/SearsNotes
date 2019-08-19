@@ -196,6 +196,9 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
                 editNoteBinding.reminderDate.setText(""+date+"-"+month+"-"+year);
             }
         },calendar.get(Calendar.DATE),calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR));
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.add(Calendar.DATE,0);
+        datePickerDialog.getDatePicker().setMinDate(calendar1.getTimeInMillis());
         datePickerDialog.show();
     }
 }
