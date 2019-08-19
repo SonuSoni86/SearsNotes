@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "531093890096",
+    "firebase_url": "https://searsnotes-110eb.firebaseio.com",
+    "project_id": "searsnotes-110eb",
+    "storage_bucket": "searsnotes-110eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531093890096:android:e9a8b90c770651cd",
+        "android_client_info": {
+          "package_name": "com.example.searsnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531093890096-genfcsv45nsbfj6c9f4sc2sa854l9pur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.searsnotes",
+            "certificate_hash": "68000b14161306fc872e8d85a9e9ed675d12f2b1"
+          }
+        },
+        {
+          "client_id": "531093890096-0tqaponom4pp0m2js1e9iu234g4p0oov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG8jcxxpX3qb0xjUsLKseJX8cUl0hI9k8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531093890096-0tqaponom4pp0m2js1e9iu234g4p0oov.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

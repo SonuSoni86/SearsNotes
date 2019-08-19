@@ -58,6 +58,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
             return listOfNotes.size();
         } else return 0;
 
+
     }
 
     public void setNotelist(List<NotesVo> notesVos) {
