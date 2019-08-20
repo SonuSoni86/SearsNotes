@@ -125,5 +125,4 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         getNavigator().setDate();
     }
 
-
 }

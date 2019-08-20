@@ -25,16 +25,7 @@ public class NotesVo {
     private String noteReminderDate;
     @ColumnInfo (name = "Reminder_status")
     private boolean noteReminderStatus;
-    @ColumnInfo (name = "Reminder_ID")
-    private String noteReminderId;
 
-    public String getNoteReminderId() {
-        return noteReminderId;
-    }
-
-    public void setNoteReminderId(String noteReminderId) {
-        this.noteReminderId = noteReminderId;
-    }
 
     public boolean isNoteReminderStatus() {
         return noteReminderStatus;

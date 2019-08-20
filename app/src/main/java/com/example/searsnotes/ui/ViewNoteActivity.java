@@ -11,7 +11,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import com.example.searsnotes.constants.IntentRequestCodes;
+
+import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
 import com.example.searsnotes.utilities.CustomCallBack;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;

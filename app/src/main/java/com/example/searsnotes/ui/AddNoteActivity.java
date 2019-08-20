@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
-import com.example.searsnotes.reminder.ReminderBroadcastReceiver;
 import com.example.searsnotes.utilities.CustomCallBack;
 import com.example.searsnotes.viewModels.AddNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityAddNoteBinding;
@@ -207,9 +206,9 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
     @Override
     public void saveButtonClicked() {
-        String reminderId= String.valueOf(viewModel.setReminder(addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox,reminderBundle));
+        int reminderId= viewModel.setReminder(addNoteBinding.remindercheckbox,reminderBundle);
         Toast.makeText(getApplicationContext(),""+reminderId,Toast.LENGTH_LONG).show();
-        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri,addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox,reminderId);
+        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri,addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox);
         setResult(RESULT_OK,  new Intent().putExtra("note_data", noteDataBundle));
         finish();
     }
@@ -217,8 +216,4 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     @Override
     public void discardButtonClicked() {finish(); }
 
-    @Override
-    public void setReminder(Calendar calendar_alarm, int reminderId) {
-        Intent i = new Intent(AddNoteActivity.this, ReminderBroadcastReceiver.class);
-    }
 }

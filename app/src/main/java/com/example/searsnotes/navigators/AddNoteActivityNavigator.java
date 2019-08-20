@@ -14,6 +14,4 @@ public interface AddNoteActivityNavigator {
     void setNoteImage(String uri);
     void saveButtonClicked();
     void discardButtonClicked();
-
-    void setReminder(Calendar calendar_alarm, int reminderId);
 }

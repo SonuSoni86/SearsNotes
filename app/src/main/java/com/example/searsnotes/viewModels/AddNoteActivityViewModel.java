@@ -38,7 +38,7 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         Log.d(TAG, "Add note ACtivity destroyed ");
     }
 
-    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox, String reminderId) {
+    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox) {
         Bundle noteDataBundle = new Bundle();
         noteDataBundle.putString("title", noteTitle.getText().toString().trim());
         noteDataBundle.putString("text", noteText.getText().toString().trim());
@@ -51,7 +51,6 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         noteDataBundle.putString("reminderTime", reminderTime.getText().toString());
         noteDataBundle.putString("reminderDate", reminderDate.getText().toString());
         noteDataBundle.putBoolean("reminderStatus", reminderCheckBox.isChecked());
-        noteDataBundle.putString("reminderID", reminderId);
         return noteDataBundle;
     }
 
@@ -126,7 +125,7 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         getNavigator().setDate();
     }
 
-    public int setReminder(TextView reminderTime, TextView reminderDate, CheckBox remindercheckbox, Bundle reminderBundle) {
+    public int setReminder(CheckBox remindercheckbox, Bundle reminderBundle) {
         int reminderId = -1;
         if (!remindercheckbox.isChecked()) return reminderId;
         else {
@@ -142,7 +141,6 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
             int year = reminderBundle.getInt("year");
             Calendar calendar_alarm = Calendar.getInstance();
             calendar_alarm.set(year,minute,day,hour,minute,0);
-            getNavigator().setReminder(calendar_alarm,reminderId);
         }
         return reminderId;
     }

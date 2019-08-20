@@ -118,7 +118,6 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
                 note.setNoteReminderTime(dataBundle.getString("reminderTime"));
                 note.setNoteReminderDate(dataBundle.getString("reminderDate"));
                 note.setNoteReminderStatus(dataBundle.getBoolean("reminderStatus"));
-                note.setNoteReminderId(dataBundle.getString("reminderID"));
                 addNote(note);
                 Toast.makeText(getApplication().getApplicationContext(),"Note saved",Toast.LENGTH_LONG).show();
 
