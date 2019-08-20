@@ -1,4 +1,4 @@
-package com.example.searsnotes.Utilities;
+package com.example.searsnotes.utilities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -14,8 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.example.searsnotes.Dao.RetrofitClientInstance;
-import com.example.searsnotes.Dao.WordApi;
+import com.example.searsnotes.dao.RetrofitClientInstance;
+import com.example.searsnotes.dao.WordApi;
 import com.example.searsnotes.model.Definitions;
 import com.example.searsnotes.model.DictionaryMeaning;
 

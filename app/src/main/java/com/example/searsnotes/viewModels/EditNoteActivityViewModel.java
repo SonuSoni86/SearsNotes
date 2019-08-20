@@ -16,9 +16,9 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
-import com.example.searsnotes.Dao.NotesDao;
-import com.example.searsnotes.Dao.NotesDatabase;
-import com.example.searsnotes.Utilities.ImportantMethods;
+import com.example.searsnotes.dao.NotesDao;
+import com.example.searsnotes.dao.NotesDatabase;
+import com.example.searsnotes.utilities.ImportantMethods;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.navigators.EditNoteActivityNavigator;
 
@@ -63,6 +63,7 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         noteDataBundle.putString("reminderTime", reminderTime.getText().toString());
         noteDataBundle.putString("reminderDate",reminderDate.getText().toString());
         noteDataBundle.putBoolean("reminderStatus", reminderCheckBox.isChecked());
+
         return  noteDataBundle;
     }
 
@@ -123,5 +124,6 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
     public void chooseDateClicked(){
         getNavigator().setDate();
     }
+
 
 }

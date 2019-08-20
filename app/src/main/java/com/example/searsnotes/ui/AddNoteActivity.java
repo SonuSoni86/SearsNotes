@@ -18,16 +18,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
-import android.view.animation.RotateAnimation;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
-import com.example.searsnotes.Utilities.CustomCallBack;
+import com.example.searsnotes.reminder.ReminderBroadcastReceiver;
+import com.example.searsnotes.utilities.CustomCallBack;
 import com.example.searsnotes.viewModels.AddNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityAddNoteBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
@@ -42,7 +40,6 @@ import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -60,12 +57,14 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     private String reminderDat;
     private boolean isReminderOn = false;
     private Calendar calendar;
+    private Bundle reminderBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addNoteBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_note);
         imageUri = null;
+        reminderBundle = new Bundle();
         calendar = Calendar.getInstance();
         addNoteBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(addNoteBinding.noteTitle, this));
         addNoteBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(addNoteBinding.noteText, this));
@@ -75,6 +74,12 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
         addNoteBinding.setViewModel(viewModel);
         addNoteBinding.reminderTime.setText(""+calendar.get(Calendar.HOUR)+":"+ calendar.get(Calendar.MINUTE)+" "+(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM"));
         addNoteBinding.reminderDate.setText(""+ calendar.get(Calendar.DATE)+"-"+ calendar.get(Calendar.MONTH) +"-"+ calendar.get(Calendar.YEAR));
+        reminderBundle.putInt("hour",calendar.get(Calendar.HOUR));
+        reminderBundle.putInt("min",calendar.get(Calendar.MINUTE));
+        reminderBundle.putInt("day",calendar.get(Calendar.DAY_OF_MONTH));
+        reminderBundle.putInt("month",calendar.get(Calendar.MONTH));
+        reminderBundle.putInt("year",calendar.get(Calendar.YEAR));
+        reminderBundle.putString("AM_PM",(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM"));
     }
 
 
@@ -166,17 +171,25 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
         TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                reminderTim =""+hour+":"+minute+" "+(timePicker.getCurrentHour().intValue()>12?"PM":"AM");
+                reminderBundle.putInt("hour",hour);
+                reminderBundle.putInt("min",minute);
+                reminderBundle.putString("AM_PM",(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM"));
+                reminderTim =""+hour+":"+minute+" "+(timePicker.getCurrentHour().intValue() >12?"PM":"AM");
                 addNoteBinding.reminderTime.setText(reminderTim);
             }
         },calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE),false);
         dialog.show();
     }
+
+
     @Override
     public void setDate() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker datePicker, int date, int month, int year) {
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+                reminderBundle.putInt("day",date);
+                reminderBundle.putInt("month",month);
+                reminderBundle.putInt("year",year);
                 reminderDat = ""+date+"-"+month+"-"+year;
                 addNoteBinding.reminderDate.setText(""+date+"-"+month+"-"+year);
             }
@@ -194,13 +207,18 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
     @Override
     public void saveButtonClicked() {
-        int reminderId=  viewModel.setReminder(addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox);
+        String reminderId= String.valueOf(viewModel.setReminder(addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox,reminderBundle));
         Toast.makeText(getApplicationContext(),""+reminderId,Toast.LENGTH_LONG).show();
-        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri,addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox);
+        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri,addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox,reminderId);
         setResult(RESULT_OK,  new Intent().putExtra("note_data", noteDataBundle));
         finish();
     }
 
     @Override
     public void discardButtonClicked() {finish(); }
+
+    @Override
+    public void setReminder(Calendar calendar_alarm, int reminderId) {
+        Intent i = new Intent(AddNoteActivity.this, ReminderBroadcastReceiver.class);
+    }
 }

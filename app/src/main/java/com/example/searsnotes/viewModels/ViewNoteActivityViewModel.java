@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;import androidx.lifecycle.LiveData;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
-import com.example.searsnotes.Dao.NotesDao;
-import com.example.searsnotes.Dao.NotesDatabase;
+import com.example.searsnotes.dao.NotesDao;
+import com.example.searsnotes.dao.NotesDatabase;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.navigators.ViewNoteActivityNavigator;
 
@@ -51,6 +51,7 @@ public class ViewNoteActivityViewModel extends BaseViewModel<ViewNoteActivityNav
                 notesVo.setNoteReminderTime(dataBundle.getString("reminderTime"));
                 notesVo.setNoteReminderDate(dataBundle.getString("reminderDate"));
                 notesVo.setNoteReminderStatus(dataBundle.getBoolean("reminderStatus"));
+                notesVo.setNoteReminderId(dataBundle.getString("reminderID"));
                 updateNote(notesVo);
                Toast.makeText(getApplication().getApplicationContext(), "Edited note saved", Toast.LENGTH_LONG).show();
 

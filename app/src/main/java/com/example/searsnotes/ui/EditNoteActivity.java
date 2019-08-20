@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
-import com.example.searsnotes.Utilities.CustomCallBack;
+import com.example.searsnotes.utilities.CustomCallBack;
 import com.example.searsnotes.databinding.ActivityEditNoteBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
@@ -40,7 +40,6 @@ import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,6 +55,8 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     private String reminderDat;
     private boolean isReminderOn = false;
     private Calendar calendar;
+    private String time,date;
+    private Bundle reminderBundle;
 
 
     @Override
@@ -73,12 +74,14 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
             public void onChanged(NotesVo notesVo) {
                 editNoteBinding.setNoteObject(notesVo);
                 imageUri = notesVo.getNoteImage();
+                time = notesVo.getNoteReminderTime();
+                date = notesVo.getNoteReminderDate();
             }
         });
         viewModel.setNavigator(this);
         editNoteBinding.setViewModel(viewModel);
-      //  editNoteBinding.reminderTime.setText(""+calendar.get(Calendar.HOUR)+":"+ calendar.get(Calendar.MINUTE)+" "+(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM"));
-      //  editNoteBinding.reminderDate.setText(""+ calendar.get(Calendar.DATE)+"-"+ calendar.get(Calendar.MONTH) +"-"+ calendar.get(Calendar.YEAR));
+        reminderBundle.putString("time",time);
+        reminderBundle.putString("date",date);
 
     }
 
@@ -181,6 +184,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                 reminderTim = ""+hour+":"+minute+" "+(timePicker.getCurrentHour().intValue()>12?"PM":"AM");
+                reminderBundle.putString("time",reminderTim);
                 editNoteBinding.reminderTime.setText(reminderTim);
 
             }
@@ -191,8 +195,9 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     public void setDate() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker datePicker, int date, int month, int year) {
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
                 reminderDat = ""+date+"-"+month+"-"+year;
+                reminderBundle.putString("date",reminderDat);
                 editNoteBinding.reminderDate.setText(""+date+"-"+month+"-"+year);
             }
         },calendar.get(Calendar.DATE),calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR));
@@ -201,4 +206,6 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
         datePickerDialog.getDatePicker().setMinDate(calendar1.getTimeInMillis());
         datePickerDialog.show();
     }
+
+
 }

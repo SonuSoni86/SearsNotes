@@ -1,6 +1,8 @@
 package com.example.searsnotes.navigators;
 
 
+import java.util.Calendar;
+
 public interface AddNoteActivityNavigator {
 
     void requestMultiplePermissions(int requestCode);
@@ -12,4 +14,6 @@ public interface AddNoteActivityNavigator {
     void setNoteImage(String uri);
     void saveButtonClicked();
     void discardButtonClicked();
+
+    void setReminder(Calendar calendar_alarm, int reminderId);
 }

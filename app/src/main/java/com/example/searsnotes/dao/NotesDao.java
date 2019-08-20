@@ -1,4 +1,4 @@
-package com.example.searsnotes.Dao;
+package com.example.searsnotes.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

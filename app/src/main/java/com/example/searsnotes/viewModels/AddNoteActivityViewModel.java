@@ -16,9 +16,10 @@ import androidx.annotation.RequiresApi;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 
-import com.example.searsnotes.Utilities.ImportantMethods;
+import com.example.searsnotes.utilities.ImportantMethods;
 import com.example.searsnotes.navigators.AddNoteActivityNavigator;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -37,39 +38,37 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         Log.d(TAG, "Add note ACtivity destroyed ");
     }
 
-    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox) {
+    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox, String reminderId) {
         Bundle noteDataBundle = new Bundle();
-        noteDataBundle.putString("title",noteTitle.getText().toString().trim());
-        noteDataBundle.putString("text",noteText.getText().toString().trim());
-        if(imageUri==null){
-            noteDataBundle.putString("uri","default");
-        }
-        else {
-            noteDataBundle.putString("uri",imageUri);
+        noteDataBundle.putString("title", noteTitle.getText().toString().trim());
+        noteDataBundle.putString("text", noteText.getText().toString().trim());
+        if (imageUri == null) {
+            noteDataBundle.putString("uri", "default");
+        } else {
+            noteDataBundle.putString("uri", imageUri);
         }
         noteDataBundle.putString("time", ImportantMethods.gettime());
         noteDataBundle.putString("reminderTime", reminderTime.getText().toString());
-        noteDataBundle.putString("reminderDate",reminderDate.getText().toString());
+        noteDataBundle.putString("reminderDate", reminderDate.getText().toString());
         noteDataBundle.putBoolean("reminderStatus", reminderCheckBox.isChecked());
-        return  noteDataBundle;
+        noteDataBundle.putString("reminderID", reminderId);
+        return noteDataBundle;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String onActivityResult(int requestCode, int resultCode, Intent data) {
         String imageUri = null;
-        switch (requestCode){
+        switch (requestCode) {
             case IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST:
-                if(resultCode==RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     Bitmap tempBmp = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
                     assert tempBmp != null;
-                    imageUri= ImportantMethods.getImageUri(getApplication().getApplicationContext(),tempBmp).toString();
+                    imageUri = ImportantMethods.getImageUri(getApplication().getApplicationContext(), tempBmp).toString();
                 }
                 break;
 
             case IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST:
-                if(resultCode==RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     Uri tempUri = data.getData();
                     assert tempUri != null;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -83,42 +82,68 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
     }
 
     public void openViewModelGalary() {
-        if(ImportantMethods.hasAllPermissions(getApplication().getApplicationContext())){getNavigator().openGalary();}
+        if (ImportantMethods.hasAllPermissions(getApplication().getApplicationContext())) {
+            getNavigator().openGalary();
+        }
     }
+
     public void openViewModelCamera() {
-        if(ImportantMethods.hasAllPermissions(getApplication().getApplicationContext())){getNavigator().openCamera();}
+        if (ImportantMethods.hasAllPermissions(getApplication().getApplicationContext())) {
+            getNavigator().openCamera();
+        }
     }
 
     public void checkImageUri(String imageUri) {
-        if(imageUri!=null){getNavigator().setNoteImage(imageUri);}
+        if (imageUri != null) {
+            getNavigator().setNoteImage(imageUri);
+        }
     }
 
-    public void saveBtnClicked() { getNavigator().saveButtonClicked(); }
+    public void saveBtnClicked() {
+        getNavigator().saveButtonClicked();
+    }
 
 
-    public void discardBtnClicked(){getNavigator().discardButtonClicked(); }
+    public void discardBtnClicked() {
+        getNavigator().discardButtonClicked();
+    }
 
-    public void picImageClicked(){
+    public void picImageClicked() {
         getNavigator().requestMultiplePermissions(IntentRequestCodes.PICK_PICTURE_ACTIVITY_REQUEST);
         openViewModelGalary();
     }
 
-    public void captureImageClicked(){
+    public void captureImageClicked() {
         getNavigator().requestMultiplePermissions(IntentRequestCodes.CAPTURE_PICTURE_ACTIVITY_REQUEST);
         openViewModelCamera();
     }
-    public void chooseTimeClicked(){
+
+    public void chooseTimeClicked() {
         getNavigator().setTime();
     }
-    public void chooseDateClicked(){
+
+    public void chooseDateClicked() {
         getNavigator().setDate();
     }
 
-    public int setReminder(TextView reminderTime, TextView reminderDate, CheckBox remindercheckbox) {
-        String time = reminderTime.getText().toString().trim();
-        String date = reminderDate.getText().toString().trim();
-        int hour = Integer.parseInt(time.substring(0,time.indexOf(":")));
-        int minute = Integer.parseInt(time.substring(time.indexOf(":")+1,time.indexOf(" ")));
-        return minute;
+    public int setReminder(TextView reminderTime, TextView reminderDate, CheckBox remindercheckbox, Bundle reminderBundle) {
+        int reminderId = -1;
+        if (!remindercheckbox.isChecked()) return reminderId;
+        else {
+            reminderId = System.identityHashCode(reminderBundle);
+            int hour = reminderBundle.getInt("hour");
+            int minute = reminderBundle.getInt("min");
+            if (reminderBundle.getString("AM_PM").equals("PM")) {
+                hour = hour + 12;
+                minute = minute + 12;
+            }
+            int day = reminderBundle.getInt("day");
+            int month = reminderBundle.getInt("month");
+            int year = reminderBundle.getInt("year");
+            Calendar calendar_alarm = Calendar.getInstance();
+            calendar_alarm.set(year,minute,day,hour,minute,0);
+            getNavigator().setReminder(calendar_alarm,reminderId);
+        }
+        return reminderId;
     }
 }

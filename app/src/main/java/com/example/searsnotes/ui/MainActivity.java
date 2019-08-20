@@ -18,7 +18,7 @@ import com.example.searsnotes.R;
 import com.example.searsnotes.databinding.ActivityMainBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
-import com.example.searsnotes.View.NoteListAdapter;
+import com.example.searsnotes.view.NoteListAdapter;
 import com.example.searsnotes.viewModels.MainActivityViewModel;
 import com.example.searsnotes.navigators.MainActivityNavigator;
 

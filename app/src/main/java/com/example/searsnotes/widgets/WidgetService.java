@@ -1,15 +1,13 @@
 package com.example.searsnotes.widgets;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.example.searsnotes.Dao.NotesDao;
-import com.example.searsnotes.Dao.NotesDatabase;
+import com.example.searsnotes.dao.NotesDao;
+import com.example.searsnotes.dao.NotesDatabase;
 import com.example.searsnotes.R;
 import com.example.searsnotes.model.NotesVo;
 

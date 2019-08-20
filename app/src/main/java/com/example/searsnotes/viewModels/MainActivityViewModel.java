@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,8 +14,8 @@ import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
-import com.example.searsnotes.Dao.NotesDao;
-import com.example.searsnotes.Dao.NotesDatabase;
+import com.example.searsnotes.dao.NotesDao;
+import com.example.searsnotes.dao.NotesDatabase;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.navigators.MainActivityNavigator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -119,6 +118,7 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
                 note.setNoteReminderTime(dataBundle.getString("reminderTime"));
                 note.setNoteReminderDate(dataBundle.getString("reminderDate"));
                 note.setNoteReminderStatus(dataBundle.getBoolean("reminderStatus"));
+                note.setNoteReminderId(dataBundle.getString("reminderID"));
                 addNote(note);
                 Toast.makeText(getApplication().getApplicationContext(),"Note saved",Toast.LENGTH_LONG).show();
 

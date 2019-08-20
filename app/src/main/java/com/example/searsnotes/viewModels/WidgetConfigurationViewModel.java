@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.searsnotes.Dao.NotesDao;
-import com.example.searsnotes.Dao.NotesDatabase;
+import com.example.searsnotes.dao.NotesDao;
+import com.example.searsnotes.dao.NotesDatabase;
 import com.example.searsnotes.model.NotesVo;
 
 import java.util.List;

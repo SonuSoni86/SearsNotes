@@ -1,4 +1,4 @@
-package com.example.searsnotes.Utilities;
+package com.example.searsnotes.utilities;
 
 import android.content.Context;
 import android.view.Menu;
