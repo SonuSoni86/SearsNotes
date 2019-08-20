@@ -8,8 +8,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
+import com.example.searsnotes.reminder.ReminderBroadcastReceiver;
 import com.example.searsnotes.utilities.CustomCallBack;
 import com.example.searsnotes.viewModels.AddNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityAddNoteBinding;
@@ -170,10 +174,11 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
         TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                if(hour>12)hour=hour-12;
                 reminderBundle.putInt("hour",hour);
                 reminderBundle.putInt("min",minute);
-                reminderBundle.putString("AM_PM",(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM"));
-                reminderTim =""+hour+":"+minute+" "+(timePicker.getCurrentHour().intValue() >12?"PM":"AM");
+                reminderBundle.putString("AM_PM",(timePicker.getCurrentHour() >12?"PM":"AM"));
+                reminderTim =""+hour+":"+minute+" "+(timePicker.getCurrentHour() >12?"PM":"AM");
                 addNoteBinding.reminderTime.setText(reminderTim);
             }
         },calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE),false);
@@ -215,5 +220,13 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
     @Override
     public void discardButtonClicked() {finish(); }
+
+    @Override
+    public void setReminder(Calendar calendar_alarm, int reminderId) {
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(AddNoteActivity.this, ReminderBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(AddNoteActivity.this,reminderId,intent,0);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar_alarm.getTimeInMillis(),pendingIntent);
+    }
 
 }

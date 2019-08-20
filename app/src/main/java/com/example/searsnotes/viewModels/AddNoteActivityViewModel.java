@@ -20,6 +20,7 @@ import com.example.searsnotes.utilities.ImportantMethods;
 import com.example.searsnotes.navigators.AddNoteActivityNavigator;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -140,7 +141,13 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
             int month = reminderBundle.getInt("month");
             int year = reminderBundle.getInt("year");
             Calendar calendar_alarm = Calendar.getInstance();
-            calendar_alarm.set(year,minute,day,hour,minute,0);
+          //  calendar_alarm.set(year,minute,day,hour,minute,0);
+            Date date = new Date();
+            calendar_alarm.setTime(date);
+            calendar_alarm.set(Calendar.HOUR_OF_DAY,hour);
+            calendar_alarm.set(Calendar.MINUTE,minute);
+            calendar_alarm.set(Calendar.SECOND,0);
+            getNavigator().setReminder(calendar_alarm,reminderId);
         }
         return reminderId;
     }

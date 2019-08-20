@@ -10,8 +10,8 @@ public interface AddNoteActivityNavigator {
     void openCamera();
     void setDate();
     void setTime();
-
     void setNoteImage(String uri);
     void saveButtonClicked();
     void discardButtonClicked();
+    void setReminder(Calendar calendar_alarm, int reminderId);
 }
