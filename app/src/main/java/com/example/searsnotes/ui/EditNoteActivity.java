@@ -54,10 +54,11 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     ViewModelProviderFactory providerFactory;
     private EditNoteActivityViewModel viewModel;
     private ActivityEditNoteBinding editNoteBinding;
-    private String reminderTim;
+    private String reminderTim,reminderDat;
     private Calendar calendar;
     private int previousReminderId;
     private Bundle reminderBundle;
+
 
 
     @Override
@@ -81,12 +82,8 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
         });
         viewModel.setNavigator(this);
         editNoteBinding.setViewModel(viewModel);
-//        reminderBundle = viewModel.makeReminderBundle(editNoteBinding.reminderTime,editNoteBinding.reminderDate);
 
     }
-
-
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -96,7 +93,6 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
         imageUri = viewModel.onActivityResult(requestCode,resultCode,data,imageUri);
         editNoteBinding.noteImage.setImageURI(Uri.parse(imageUri));
     }
-
 
 
     @Override
@@ -170,6 +166,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
 
     @Override
     public void saveButtonClicked() {
+        reminderBundle = viewModel.makeReminderBundle(editNoteBinding.reminderTime.getText().toString(),editNoteBinding.reminderDate.getText().toString());
         String reminderId= String.valueOf(viewModel.updateReminder(editNoteBinding.remindercheckbox,reminderBundle));
         Bundle noteDataBundle = viewModel.makeBundle(noteID,editNoteBinding.noteTitle,editNoteBinding.noteText,imageUri,editNoteBinding.reminderTime,editNoteBinding.reminderDate,editNoteBinding.remindercheckbox,reminderId);
         setResult(RESULT_OK,new Intent().putExtra("note_data",noteDataBundle));
@@ -203,8 +200,8 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
                 reminderBundle.putInt("day",date);
                 reminderBundle.putInt("month",month);
                 reminderBundle.putInt("year",year);
-                String s = ""+date+"-"+month+"-"+year;
-                editNoteBinding.reminderDate.setText(s);
+                reminderDat = ""+date+"-"+month+"-"+year;
+                editNoteBinding.reminderDate.setText(reminderDat);
             }
         },calendar.get(Calendar.DATE),calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR));
         Calendar calendar1 = Calendar.getInstance();
@@ -226,6 +223,10 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     private void deletePreviousReminder(int reminderId) {
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), ReminderBroadcastReceiver.class);
+        Bundle notificationBundle = new Bundle();
+        notificationBundle.putString("title",editNoteBinding.noteTitle.getText().toString());
+        notificationBundle.putString("text",editNoteBinding.noteText.getText().toString());
+        intent.putExtras(notificationBundle);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),reminderId,intent,0);
         assert alarmManager != null;
         alarmManager.cancel(pendingIntent);

@@ -16,7 +16,6 @@ import com.example.searsnotes.dao.NotesDao;
 import com.example.searsnotes.dao.NotesDatabase;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.navigators.ViewNoteActivityNavigator;
-import com.example.searsnotes.utilities.ImportantMethods;
 
 import static android.app.Activity.RESULT_OK;
 

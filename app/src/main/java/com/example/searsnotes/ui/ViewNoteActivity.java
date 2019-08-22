@@ -103,6 +103,7 @@ public class ViewNoteActivity extends AppCompatActivity implements ViewNoteActiv
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), ReminderBroadcastReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),reminderId,intent,0);
+        assert alarmManager != null;
         alarmManager.cancel(pendingIntent);
     }
 }

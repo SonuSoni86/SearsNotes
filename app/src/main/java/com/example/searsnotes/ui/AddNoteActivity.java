@@ -220,6 +220,10 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     public void setReminder(Calendar calendar_alarm, int reminderId) {
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), ReminderBroadcastReceiver.class);
+        Bundle notificationBundle = new Bundle();
+        notificationBundle.putString("title",addNoteBinding.noteTitle.getText().toString());
+        notificationBundle.putString("text",addNoteBinding.noteText.getText().toString());
+        intent.putExtras(notificationBundle);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),reminderId,intent,0);
         assert alarmManager != null;
         alarmManager.set(AlarmManager.RTC_WAKEUP,calendar_alarm.getTimeInMillis(),pendingIntent);

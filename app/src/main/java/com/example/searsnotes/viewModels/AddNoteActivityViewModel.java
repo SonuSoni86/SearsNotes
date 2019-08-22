@@ -20,7 +20,6 @@ import com.example.searsnotes.utilities.ImportantMethods;
 import com.example.searsnotes.navigators.AddNoteActivityNavigator;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;

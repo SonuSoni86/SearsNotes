@@ -27,7 +27,6 @@ public class WidgetService extends RemoteViewsService {
        // private int appWidgetId;
         private List<NotesVo> notesVoList;
         private NotesDao notesDao;
-        List<NotesVo> tempNotesVoList = new ArrayList<>();
 
         WidgetItemFactory(Context context, Intent intent) {
 

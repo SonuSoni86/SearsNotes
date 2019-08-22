@@ -127,10 +127,8 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         getNavigator().setDate();
     }
 
-    public Bundle makeReminderBundle(TextView reminderTime, TextView reminderDate) {
+    public Bundle makeReminderBundle(String time, String date) {
         Bundle reminderBundle = new Bundle();
-        String time = reminderTime.getText().toString();
-        String date = reminderDate.getText().toString();
         int hour = Integer.parseInt(time.substring(0,time.indexOf(':')));
         int minute =Integer.parseInt(time.substring(time.indexOf(':')+1,time.indexOf(" ")));
         String AM_PM =time.substring(time.indexOf(" ")+1,time.length());
