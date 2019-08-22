@@ -28,7 +28,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> {
 
-    private String TAG= this.getClass().getSimpleName();
+    private String TAG = this.getClass().getSimpleName();
     private NotesDao notesDao;
     private LiveData<List<NotesVo>> listOfNotes;
 
@@ -42,10 +42,13 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
     }
 
 
-    public LiveData<List<NotesVo>> getListOfNotes(){
-            return listOfNotes;
+    public LiveData<List<NotesVo>> getListOfNotes() {
+        return listOfNotes;
     }
-    public void updateNote(NotesVo note){ new UpdateNoteAsyncTask(notesDao).execute(note); }
+
+    public void updateNote(NotesVo note) {
+        new UpdateNoteAsyncTask(notesDao).execute(note);
+    }
 
     private void addNote(NotesVo note) {
         new AddNoteAsyncTask(notesDao).execute(note);
@@ -54,19 +57,15 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
     public void hideFab(RecyclerView notesView, final FloatingActionButton addNoteBtn) {
         notesView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
-                if (dy > 0 ||dy<0 && addNoteBtn.isShown())
-                {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && addNoteBtn.isShown()) {
                     addNoteBtn.hide();
                 }
             }
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
-            {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     addNoteBtn.show();
                 }
 
@@ -93,9 +92,12 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
 
 
     @SuppressLint("StaticFieldLeak")
-    private class UpdateNoteAsyncTask extends AsyncTask<NotesVo,Void,Void> {
+    private class UpdateNoteAsyncTask extends AsyncTask<NotesVo, Void, Void> {
         NotesDao notesDao;
-        UpdateNoteAsyncTask(NotesDao notesDao) { this.notesDao = notesDao;}
+
+        UpdateNoteAsyncTask(NotesDao notesDao) {
+            this.notesDao = notesDao;
+        }
 
         @Override
         protected Void doInBackground(NotesVo... notesVos) {
@@ -104,9 +106,9 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
         }
     }
 
-   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode== IntentRequestCodes.NEW_NOTE_ACTIVITY_REQUEST){
-            if(resultCode==RESULT_OK){
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == IntentRequestCodes.NEW_NOTE_ACTIVITY_REQUEST) {
+            if (resultCode == RESULT_OK) {
                 assert data != null;
                 Bundle dataBundle = data.getBundleExtra("note_data");
                 NotesVo note = new NotesVo();
@@ -118,11 +120,12 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
                 note.setNoteReminderTime(dataBundle.getString("reminderTime"));
                 note.setNoteReminderDate(dataBundle.getString("reminderDate"));
                 note.setNoteReminderStatus(dataBundle.getBoolean("reminderStatus"));
+                note.setNoteReminderId(dataBundle.getString("reminderId"));
                 addNote(note);
-                Toast.makeText(getApplication().getApplicationContext(),"Note saved",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication().getApplicationContext(), "Note saved", Toast.LENGTH_LONG).show();
 
-            }else{
-                Toast.makeText(getApplication().getApplicationContext(),"Note Not saved",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplication().getApplicationContext(), "Note Not saved", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -130,8 +133,9 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
     @Override
     protected void onCleared() {
         super.onCleared();
-        Log.i(TAG,"MainActivity View Model Destroyed");
+        Log.i(TAG, "MainActivity View Model Destroyed");
     }
+
     public void addNoteClicked() {
         getNavigator().addNoteClicked();
     }

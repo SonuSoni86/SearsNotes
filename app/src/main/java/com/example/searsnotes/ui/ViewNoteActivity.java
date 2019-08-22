@@ -7,13 +7,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
+import com.example.searsnotes.reminder.ReminderBroadcastReceiver;
 import com.example.searsnotes.utilities.CustomCallBack;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
@@ -73,6 +76,7 @@ public class ViewNoteActivity extends AppCompatActivity implements ViewNoteActiv
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
                 note.removeObservers(ViewNoteActivity.this);
+                viewModel.cancelReminderIfExist(noteObject);
                 viewModel.deleteNote(noteObject);
                 finish();
             }
@@ -92,5 +96,13 @@ public class ViewNoteActivity extends AppCompatActivity implements ViewNoteActiv
     @Override
     public void editBtnClicked() {
         startActivityForResult(new Intent(ViewNoteActivity.this, EditNoteActivity.class).putExtra("id",noteID), IntentRequestCodes.UPDATE_NOTE_ACTIVITY_REQUEST);
+    }
+
+    @Override
+    public void cancelReminder(int reminderId) {
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), ReminderBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),reminderId,intent,0);
+        alarmManager.cancel(pendingIntent);
     }
 }

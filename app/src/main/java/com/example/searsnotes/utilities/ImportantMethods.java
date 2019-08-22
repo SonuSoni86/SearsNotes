@@ -103,4 +103,5 @@ public class ImportantMethods {
                && (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED));
 
     }
+
 }

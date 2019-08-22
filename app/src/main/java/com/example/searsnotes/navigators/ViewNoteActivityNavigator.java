@@ -4,4 +4,6 @@ public interface ViewNoteActivityNavigator {
     void deleteBtnClicked();
     void discardBtnClicked();
     void editBtnClicked();
+
+    void cancelReminder(int parseInt);
 }

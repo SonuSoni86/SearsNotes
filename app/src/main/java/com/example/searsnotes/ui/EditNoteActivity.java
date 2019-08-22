@@ -10,7 +10,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
+import com.example.searsnotes.reminder.ReminderBroadcastReceiver;
 import com.example.searsnotes.utilities.CustomCallBack;
 import com.example.searsnotes.databinding.ActivityEditNoteBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
@@ -52,9 +55,9 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     private EditNoteActivityViewModel viewModel;
     private ActivityEditNoteBinding editNoteBinding;
     private String reminderTim;
-    private String reminderDat;
-    private boolean isReminderOn = false;
     private Calendar calendar;
+    private int previousReminderId;
+    private Bundle reminderBundle;
 
 
     @Override
@@ -64,18 +67,21 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
         editNoteBinding.noteTitle.setCustomSelectionActionModeCallback(new CustomCallBack(editNoteBinding.noteTitle,this));
         editNoteBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(editNoteBinding.noteText,this));
         calendar = Calendar.getInstance();
+        reminderBundle = new Bundle();
         noteID = getIntent().getIntExtra("id",-1);
         viewModel = ViewModelProviders.of(this,providerFactory).get(EditNoteActivityViewModel.class);
-        LiveData<NotesVo> note = viewModel.getNote(noteID);
+        final LiveData<NotesVo> note = viewModel.getNote(noteID);
         note.observe(this, new Observer<NotesVo>() {
             @Override
             public void onChanged(NotesVo notesVo) {
                 editNoteBinding.setNoteObject(notesVo);
                 imageUri = notesVo.getNoteImage();
+                previousReminderId = Integer.parseInt(notesVo.getNoteReminderId());
             }
         });
         viewModel.setNavigator(this);
         editNoteBinding.setViewModel(viewModel);
+//        reminderBundle = viewModel.makeReminderBundle(editNoteBinding.reminderTime,editNoteBinding.reminderDate);
 
     }
 
@@ -164,7 +170,8 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
 
     @Override
     public void saveButtonClicked() {
-        Bundle noteDataBundle = viewModel.makeBundle(noteID,editNoteBinding.noteTitle,editNoteBinding.noteText,imageUri,editNoteBinding.reminderTime,editNoteBinding.reminderDate,editNoteBinding.remindercheckbox);
+        String reminderId= String.valueOf(viewModel.updateReminder(editNoteBinding.remindercheckbox,reminderBundle));
+        Bundle noteDataBundle = viewModel.makeBundle(noteID,editNoteBinding.noteTitle,editNoteBinding.noteText,imageUri,editNoteBinding.reminderTime,editNoteBinding.reminderDate,editNoteBinding.remindercheckbox,reminderId);
         setResult(RESULT_OK,new Intent().putExtra("note_data",noteDataBundle));
         finish();
     }
@@ -177,7 +184,11 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
         TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                reminderTim = ""+hour+":"+minute+" "+(timePicker.getCurrentHour().intValue()>12?"PM":"AM");
+                if(hour>12)hour=hour-12;
+                reminderBundle.putInt("hour",hour);
+                reminderBundle.putInt("min",minute);
+                reminderBundle.putString("AM_PM",(timePicker.getCurrentHour() >12?"PM":"AM"));
+                reminderTim = ""+hour+":"+minute+" "+(timePicker.getCurrentHour()>12?"PM":"AM");
                 editNoteBinding.reminderTime.setText(reminderTim);
 
             }
@@ -189,14 +200,35 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int date) {
-                reminderDat = ""+date+"-"+month+"-"+year;
-                editNoteBinding.reminderDate.setText(""+date+"-"+month+"-"+year);
+                reminderBundle.putInt("day",date);
+                reminderBundle.putInt("month",month);
+                reminderBundle.putInt("year",year);
+                String s = ""+date+"-"+month+"-"+year;
+                editNoteBinding.reminderDate.setText(s);
             }
         },calendar.get(Calendar.DATE),calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR));
         Calendar calendar1 = Calendar.getInstance();
         calendar1.add(Calendar.DATE,0);
         datePickerDialog.getDatePicker().setMinDate(calendar1.getTimeInMillis());
         datePickerDialog.show();
+    }
+
+    @Override
+    public void modifyReminder(Calendar calendar_alarm, int reminderId) {
+        deletePreviousReminder(previousReminderId);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), ReminderBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),reminderId,intent,0);
+        assert alarmManager != null;
+        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar_alarm.getTimeInMillis(),pendingIntent);
+    }
+
+    private void deletePreviousReminder(int reminderId) {
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), ReminderBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),reminderId,intent,0);
+        assert alarmManager != null;
+        alarmManager.cancel(pendingIntent);
     }
 
 

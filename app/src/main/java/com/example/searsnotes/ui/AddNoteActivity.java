@@ -12,7 +12,6 @@ import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -57,8 +56,6 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     private AddNoteActivityViewModel viewModel;
     boolean flag = false;
     private String reminderTim;
-    private String reminderDat;
-    private boolean isReminderOn = false;
     private Calendar calendar;
     private Bundle reminderBundle;
 
@@ -75,8 +72,10 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
         viewModel = ViewModelProviders.of(this, providerFactory).get(AddNoteActivityViewModel.class);
         viewModel.setNavigator(this);
         addNoteBinding.setViewModel(viewModel);
-        addNoteBinding.reminderTime.setText(""+calendar.get(Calendar.HOUR)+":"+ calendar.get(Calendar.MINUTE)+" "+(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM"));
-        addNoteBinding.reminderDate.setText(""+ calendar.get(Calendar.DATE)+"-"+ calendar.get(Calendar.MONTH) +"-"+ calendar.get(Calendar.YEAR));
+        reminderTim = ""+calendar.get(Calendar.HOUR)+":"+ calendar.get(Calendar.MINUTE)+" "+(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM");
+        addNoteBinding.reminderTime.setText(reminderTim);
+        String reminderDat = ""+ calendar.get(Calendar.DATE)+"-"+ calendar.get(Calendar.MONTH) +"-"+ calendar.get(Calendar.YEAR);
+        addNoteBinding.reminderDate.setText(reminderDat);
         reminderBundle.putInt("hour",calendar.get(Calendar.HOUR));
         reminderBundle.putInt("min",calendar.get(Calendar.MINUTE));
         reminderBundle.putInt("day",calendar.get(Calendar.DAY_OF_MONTH));
@@ -84,9 +83,6 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
         reminderBundle.putInt("year",calendar.get(Calendar.YEAR));
         reminderBundle.putString("AM_PM",(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM"));
     }
-
-
-
 
 
     public void captureImageClicked(View view) {
@@ -194,8 +190,8 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
                 reminderBundle.putInt("day",date);
                 reminderBundle.putInt("month",month);
                 reminderBundle.putInt("year",year);
-                reminderDat = ""+date+"-"+month+"-"+year;
-                addNoteBinding.reminderDate.setText(""+date+"-"+month+"-"+year);
+                String s = ""+date+"-"+month+"-"+year;
+                addNoteBinding.reminderDate.setText(s);
             }
         },calendar.get(Calendar.DATE),calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR));
         Calendar calendar1 = Calendar.getInstance();
@@ -211,9 +207,8 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
 
     @Override
     public void saveButtonClicked() {
-        int reminderId= viewModel.setReminder(addNoteBinding.remindercheckbox,reminderBundle);
-        Toast.makeText(getApplicationContext(),""+reminderId,Toast.LENGTH_LONG).show();
-        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri,addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox);
+        String reminderId= String.valueOf(viewModel.setReminder(addNoteBinding.remindercheckbox,reminderBundle));
+        Bundle noteDataBundle = viewModel.makeBundle(addNoteBinding.noteTitle, addNoteBinding.noteText, imageUri,addNoteBinding.reminderTime,addNoteBinding.reminderDate,addNoteBinding.remindercheckbox,reminderId);
         setResult(RESULT_OK,  new Intent().putExtra("note_data", noteDataBundle));
         finish();
     }
@@ -224,8 +219,9 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
     @Override
     public void setReminder(Calendar calendar_alarm, int reminderId) {
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(AddNoteActivity.this, ReminderBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(AddNoteActivity.this,reminderId,intent,0);
+        Intent intent = new Intent(getApplicationContext(), ReminderBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),reminderId,intent,0);
+        assert alarmManager != null;
         alarmManager.set(AlarmManager.RTC_WAKEUP,calendar_alarm.getTimeInMillis(),pendingIntent);
     }
 

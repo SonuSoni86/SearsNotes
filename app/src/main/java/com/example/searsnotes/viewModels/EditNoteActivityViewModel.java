@@ -23,6 +23,7 @@ import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.navigators.EditNoteActivityNavigator;
 
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -48,7 +49,7 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         Log.i(TAG,"EditNoteActivity destroyed");
     }
 
-    public Bundle makeBundle(int noteID, EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox) {
+    public Bundle makeBundle(int noteID, EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox,String reminderId) {
         Bundle noteDataBundle = new Bundle();
         noteDataBundle.putInt("id",noteID);
         noteDataBundle.putString("title",noteTitle.getText().toString().trim());
@@ -63,6 +64,7 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         noteDataBundle.putString("reminderTime", reminderTime.getText().toString());
         noteDataBundle.putString("reminderDate",reminderDate.getText().toString());
         noteDataBundle.putBoolean("reminderStatus", reminderCheckBox.isChecked());
+        noteDataBundle.putString("reminderId", reminderId);
 
         return  noteDataBundle;
     }
@@ -125,4 +127,42 @@ public class EditNoteActivityViewModel extends BaseViewModel<EditNoteActivityNav
         getNavigator().setDate();
     }
 
+    public Bundle makeReminderBundle(TextView reminderTime, TextView reminderDate) {
+        Bundle reminderBundle = new Bundle();
+        String time = reminderTime.getText().toString();
+        String date = reminderDate.getText().toString();
+        int hour = Integer.parseInt(time.substring(0,time.indexOf(':')));
+        int minute =Integer.parseInt(time.substring(time.indexOf(':')+1,time.indexOf(" ")));
+        String AM_PM =time.substring(time.indexOf(" ")+1,time.length());
+        int day = Integer.parseInt(date.substring(0,date.indexOf('-')));
+        int month= Integer.parseInt(date.substring(date.indexOf('-')+1,date.lastIndexOf('-')));
+        int year = Integer.parseInt(date.substring(date.lastIndexOf('-')+1,date.length()));
+        reminderBundle.putInt("hour",hour);
+        reminderBundle.putInt("min",minute);
+        reminderBundle.putInt("day",day);
+        reminderBundle.putInt("month",month);
+        reminderBundle.putInt("year",year);
+        reminderBundle.putString("AM_PM",AM_PM);
+        return reminderBundle;
+    }
+
+    public int updateReminder(CheckBox remindercheckbox, Bundle reminderBundle) {
+        int reminderId = -1;
+        if (!remindercheckbox.isChecked()) return reminderId;
+        else {
+            reminderId = System.identityHashCode(reminderBundle);
+            int hour = reminderBundle.getInt("hour");
+            int minute = reminderBundle.getInt("min");
+            if (reminderBundle.getString("AM_PM").equals("PM")) {
+                hour = hour + 12;
+            }
+            int day = reminderBundle.getInt("day");
+            int month = reminderBundle.getInt("month");
+            int year = reminderBundle.getInt("year");
+            Calendar calendar_alarm = Calendar.getInstance();
+            calendar_alarm.set(year,month,day,hour,minute,0);
+            getNavigator().modifyReminder(calendar_alarm,reminderId);
+        }
+        return reminderId;
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.searsnotes.navigators;
 
+import java.util.Calendar;
+
 public interface EditNoteActivityNavigator {
     void openGalary();
     void openCamera();
@@ -11,4 +13,6 @@ public interface EditNoteActivityNavigator {
     void setTime();
 
     void setDate();
+
+    void modifyReminder(Calendar calendar_alarm, int reminderId);
 }

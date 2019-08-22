@@ -39,7 +39,7 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         Log.d(TAG, "Add note ACtivity destroyed ");
     }
 
-    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox) {
+    public Bundle makeBundle(EditText noteTitle, EditText noteText, String imageUri, TextView reminderTime, TextView reminderDate, CheckBox reminderCheckBox,String reminderId) {
         Bundle noteDataBundle = new Bundle();
         noteDataBundle.putString("title", noteTitle.getText().toString().trim());
         noteDataBundle.putString("text", noteText.getText().toString().trim());
@@ -52,6 +52,7 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
         noteDataBundle.putString("reminderTime", reminderTime.getText().toString());
         noteDataBundle.putString("reminderDate", reminderDate.getText().toString());
         noteDataBundle.putBoolean("reminderStatus", reminderCheckBox.isChecked());
+        noteDataBundle.putString("reminderId", reminderId);
         return noteDataBundle;
     }
 
@@ -135,18 +136,12 @@ public class AddNoteActivityViewModel extends BaseViewModel<AddNoteActivityNavig
             int minute = reminderBundle.getInt("min");
             if (reminderBundle.getString("AM_PM").equals("PM")) {
                 hour = hour + 12;
-                minute = minute + 12;
             }
             int day = reminderBundle.getInt("day");
             int month = reminderBundle.getInt("month");
             int year = reminderBundle.getInt("year");
             Calendar calendar_alarm = Calendar.getInstance();
-          //  calendar_alarm.set(year,minute,day,hour,minute,0);
-            Date date = new Date();
-            calendar_alarm.setTime(date);
-            calendar_alarm.set(Calendar.HOUR_OF_DAY,hour);
-            calendar_alarm.set(Calendar.MINUTE,minute);
-            calendar_alarm.set(Calendar.SECOND,0);
+            calendar_alarm.set(year,month,day,hour,minute,0);
             getNavigator().setReminder(calendar_alarm,reminderId);
         }
         return reminderId;

@@ -16,6 +16,7 @@ import com.example.searsnotes.dao.NotesDao;
 import com.example.searsnotes.dao.NotesDatabase;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.navigators.ViewNoteActivityNavigator;
+import com.example.searsnotes.utilities.ImportantMethods;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -51,6 +52,7 @@ public class ViewNoteActivityViewModel extends BaseViewModel<ViewNoteActivityNav
                 notesVo.setNoteReminderTime(dataBundle.getString("reminderTime"));
                 notesVo.setNoteReminderDate(dataBundle.getString("reminderDate"));
                 notesVo.setNoteReminderStatus(dataBundle.getBoolean("reminderStatus"));
+                notesVo.setNoteReminderId(dataBundle.getString("reminderId"));
                 updateNote(notesVo);
                Toast.makeText(getApplication().getApplicationContext(), "Edited note saved", Toast.LENGTH_LONG).show();
 
@@ -65,6 +67,12 @@ public class ViewNoteActivityViewModel extends BaseViewModel<ViewNoteActivityNav
         super.onCleared();
         Log.i(TAG,"ViewNoteActivity destroyed");
 
+    }
+
+    public void cancelReminderIfExist(NotesVo noteObject) {
+        if(noteObject.isNoteReminderStatus()){
+            getNavigator().cancelReminder(Integer.parseInt(noteObject.getNoteReminderId()));
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
