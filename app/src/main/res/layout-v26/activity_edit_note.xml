@@ -8,6 +8,9 @@
         <variable
             name="viewModel"
             type="com.example.searsnotes.viewModels.EditNoteActivityViewModel" />
+        <variable
+            name="importantMethods"
+            type="com.example.searsnotes.utilities.ImportantMethods" />
     </data>
     <RelativeLayout 
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -68,15 +71,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Turn On Reminder"
-                        android:textSize="12dp"
+                        android:textSize="12sp"
                         android:id="@+id/remindercheckbox"
-                        android:checked="@{noteObject.noteReminderStatus}"
-                        android:layout_centerVertical="true"/>
+                        android:checked="false"
+                        android:layout_centerVertical="true"
+                        tools:ignore="HardcodedText" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/border"
-                        android:layout_toRightOf="@id/remindercheckbox"
+                        android:layout_toEndOf="@id/remindercheckbox"
                         android:onClick="@{()->viewModel.chooseTimeClicked()}"
                         android:text="@{noteObject.noteReminderTime}"
                         android:layout_marginHorizontal="10dp"
@@ -87,7 +91,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/border"
-                        android:layout_toRightOf="@id/reminderTime"
+                        android:layout_toEndOf="@id/reminderTime"
                         android:onClick="@{()->viewModel.chooseDateClicked()}"
                         android:text="@{noteObject.noteReminderDate}"
                         android:padding="5dp"

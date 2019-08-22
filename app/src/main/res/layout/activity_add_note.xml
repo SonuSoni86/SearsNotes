@@ -61,14 +61,16 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginHorizontal="10dp"
                     android:id="@+id/middleLayout"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    tools:ignore="UnusedAttribute">
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Turn On Reminder"
-                        android:textSize="12dp"
+                        android:textSize="12sp"
                         android:id="@+id/remindercheckbox"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        tools:ignore="HardcodedText" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -79,7 +81,8 @@
                         android:layout_marginHorizontal="10dp"
                         android:padding="5dp"
                         android:id="@+id/reminderTime"
-                        />
+                        android:layout_toEndOf="@id/remindercheckbox"
+                        tools:ignore="HardcodedText" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -90,7 +93,8 @@
 
                         android:padding="5dp"
                         android:id="@+id/reminderDate"
-                        />
+                        tools:ignore="HardcodedText"
+                        android:layout_toEndOf="@id/reminderTime" />
                 </RelativeLayout>
                 <ImageView
                     android:id="@+id/note_image"

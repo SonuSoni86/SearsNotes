@@ -21,6 +21,7 @@ import com.example.searsnotes.utilities.CustomCallBack;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
 import com.example.searsnotes.navigators.ViewNoteActivityNavigator;
+import com.example.searsnotes.utilities.ImportantMethods;
 import com.example.searsnotes.viewModels.ViewNoteActivityViewModel;
 import com.example.searsnotes.databinding.ActivityViewNoteBinding;
 
@@ -35,6 +36,7 @@ public class ViewNoteActivity extends AppCompatActivity implements ViewNoteActiv
     @Inject
     ViewModelProviderFactory providerFactory;
     private ViewNoteActivityViewModel viewModel;
+    private ImportantMethods importantMethods;
 
 
     @Override
@@ -55,6 +57,7 @@ public class ViewNoteActivity extends AppCompatActivity implements ViewNoteActiv
         mBinding.noteText.setCustomSelectionActionModeCallback(new CustomCallBack(mBinding.noteText, this));
         viewModel.setNavigator(this);
         mBinding.setViewModel(viewModel);
+        mBinding.setImportantMethods(importantMethods);
 
     }
 

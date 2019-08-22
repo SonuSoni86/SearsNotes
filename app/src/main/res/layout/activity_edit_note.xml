@@ -8,6 +8,9 @@
         <variable
             name="viewModel"
             type="com.example.searsnotes.viewModels.EditNoteActivityViewModel" />
+        <variable
+            name="importantMethods"
+            type="com.example.searsnotes.utilities.ImportantMethods" />
     </data>
     <RelativeLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -60,15 +63,17 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginHorizontal="10dp"
                     android:id="@+id/middleLayout"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    tools:targetApi="o">
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Turn On Reminder"
-                        android:textSize="12dp"
+                        android:textSize="12sp"
                         android:id="@+id/remindercheckbox"
-                        android:checked="@{noteObject.noteReminderStatus}"
-                        android:layout_centerVertical="true"/>
+                        android:checked="false"
+                        android:layout_centerVertical="true"
+                        tools:ignore="HardcodedText" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -79,7 +84,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:padding="5dp"
                         android:id="@+id/reminderTime"
-                        />
+                        android:layout_toEndOf="@id/remindercheckbox" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -89,7 +94,7 @@
                         android:text="@{noteObject.noteReminderDate}"
                         android:padding="5dp"
                         android:id="@+id/reminderDate"
-                        />
+                        android:layout_toEndOf="@id/reminderTime" />
                 </RelativeLayout>
 
                 <ImageView

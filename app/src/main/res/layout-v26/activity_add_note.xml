@@ -66,30 +66,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Turn On Reminder"
-                        android:textSize="12dp"
+                        android:textSize="12sp"
                         android:id="@+id/remindercheckbox"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        tools:ignore="HardcodedText" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/border"
-                        android:layout_toRightOf="@id/remindercheckbox"
+                        android:layout_toEndOf="@id/remindercheckbox"
                         android:onClick="@{()->viewModel.chooseTimeClicked()}"
                         android:text="Choose Time"
                         android:layout_marginHorizontal="10dp"
                         android:padding="5dp"
                         android:id="@+id/reminderTime"
-                        />
+                        tools:ignore="HardcodedText" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/border"
-                        android:layout_toRightOf="@id/reminderTime"
+                        android:layout_toEndOf="@id/reminderTime"
                         android:onClick="@{()->viewModel.chooseDateClicked()}"
                         android:text="Choose Date"
                         android:padding="5dp"
                         android:id="@+id/reminderDate"
-                        />
+                        tools:ignore="HardcodedText" />
                 </RelativeLayout>
 
                 <ImageView

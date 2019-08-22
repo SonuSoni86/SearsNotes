@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -104,4 +105,21 @@ public class ImportantMethods {
 
     }
 
+    public boolean hasFiredOrNot(String time, String date){
+
+        int hour = Integer.parseInt(time.substring(0,time.indexOf(':')));
+        int minute =Integer.parseInt(time.substring(time.indexOf(':')+1,time.indexOf(" ")));
+        String AM_PM =time.substring(time.indexOf(" ")+1,time.length());
+        int day = Integer.parseInt(date.substring(0,date.indexOf('-')));
+        int month= Integer.parseInt(date.substring(date.indexOf('-')+1,date.lastIndexOf('-')));
+        int year = Integer.parseInt(date.substring(date.lastIndexOf('-')+1,date.length()));
+        Calendar time_now = Calendar.getInstance();
+        Calendar time_alarm = Calendar.getInstance();
+        if(AM_PM.equals("PM"))hour=hour+12;
+
+        time_now.setTime(new Date());
+        time_now.set(Calendar.SECOND,0);
+        time_alarm.set(year,month,day,hour,minute,0);
+        return !time_alarm.getTime().after(time_now.getTime());
+    }
 }

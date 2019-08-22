@@ -32,6 +32,7 @@ import com.example.searsnotes.utilities.CustomCallBack;
 import com.example.searsnotes.databinding.ActivityEditNoteBinding;
 import com.example.searsnotes.dependencyInjection.ViewModelProviderFactory;
 import com.example.searsnotes.model.NotesVo;
+import com.example.searsnotes.utilities.ImportantMethods;
 import com.example.searsnotes.viewModels.EditNoteActivityViewModel;
 import com.example.searsnotes.navigators.EditNoteActivityNavigator;
 import com.karumi.dexter.Dexter;
@@ -58,6 +59,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     private Calendar calendar;
     private int previousReminderId;
     private Bundle reminderBundle;
+    private ImportantMethods importantMethods;
 
 
 
@@ -82,6 +84,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
         });
         viewModel.setNavigator(this);
         editNoteBinding.setViewModel(viewModel);
+        editNoteBinding.setImportantMethods(importantMethods);
 
     }
 
