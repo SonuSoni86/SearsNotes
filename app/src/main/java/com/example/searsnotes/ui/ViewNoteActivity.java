@@ -42,6 +42,7 @@ public class ViewNoteActivity extends AppCompatActivity implements ViewNoteActiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        importantMethods = new ImportantMethods();
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_view_note);
         noteID = getIntent().getIntExtra("id", -1);
         viewModel = ViewModelProviders.of(this,providerFactory).get(ViewNoteActivityViewModel.class);

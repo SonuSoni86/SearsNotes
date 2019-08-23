@@ -59,6 +59,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
     private Calendar calendar;
     private int previousReminderId;
     private Bundle reminderBundle;
+    private NotesVo notesObject;
     private ImportantMethods importantMethods;
 
 
@@ -79,7 +80,7 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
             public void onChanged(NotesVo notesVo) {
                 editNoteBinding.setNoteObject(notesVo);
                 imageUri = notesVo.getNoteImage();
-                previousReminderId = Integer.parseInt(notesVo.getNoteReminderId());
+                notesObject = notesVo;
             }
         });
         viewModel.setNavigator(this);
@@ -215,9 +216,14 @@ public class EditNoteActivity extends AppCompatActivity implements EditNoteActiv
 
     @Override
     public void modifyReminder(Calendar calendar_alarm, int reminderId) {
+        previousReminderId = Integer.parseInt(notesObject.getNoteReminderId());
         deletePreviousReminder(previousReminderId);
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), ReminderBroadcastReceiver.class);
+        Bundle notificationBundle = new Bundle();
+        notificationBundle.putString("title",editNoteBinding.noteTitle.getText().toString());
+        notificationBundle.putString("text",editNoteBinding.noteText.getText().toString());
+        intent.putExtras(notificationBundle);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),reminderId,intent,0);
         assert alarmManager != null;
         alarmManager.set(AlarmManager.RTC_WAKEUP,calendar_alarm.getTimeInMillis(),pendingIntent);

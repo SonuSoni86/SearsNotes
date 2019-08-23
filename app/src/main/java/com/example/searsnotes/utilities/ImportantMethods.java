@@ -120,6 +120,6 @@ public class ImportantMethods {
         time_now.setTime(new Date());
         time_now.set(Calendar.SECOND,0);
         time_alarm.set(year,month,day,hour,minute,0);
-        return !time_alarm.getTime().after(time_now.getTime());
+        return time_now.getTime().before(time_alarm.getTime());
     }
 }
