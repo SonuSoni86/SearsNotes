@@ -30,6 +30,9 @@ public interface NotesDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateNote(NotesVo note);
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateMultipleNotes(List<NotesVo> notes);
+
     @Delete
     void deleteNote(NotesVo note);
 }

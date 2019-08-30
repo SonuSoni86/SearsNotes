@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.searsnotes.Constants.IntentRequestCodes;
 import com.example.searsnotes.R;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityNavig
     private MainActivityViewModel mainActivityViewModel;
     private NoteListAdapter adapter;
     private List<NotesVo> upDatedList = new ArrayList<>();
+    private List<NotesVo> tempList = new ArrayList<>();
+    private int intial, last;
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -40,12 +43,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityNavig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMainBinding mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        final ActivityMainBinding mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainBinding.notesView.setLayoutManager(new LinearLayoutManager(this));
+        mainBinding.notesView.setHasFixedSize(true);
+        mainActivityViewModel = ViewModelProviders.of(this, providerFactory).get(MainActivityViewModel.class);
         adapter = new NoteListAdapter(this);
         mainBinding.notesView.setAdapter(adapter);
-        mainBinding.notesView.setHasFixedSize(true);
-        mainActivityViewModel = ViewModelProviders.of(this,providerFactory).get(MainActivityViewModel.class);
         mainActivityViewModel.getListOfNotes().observe(this, new Observer<List<NotesVo>>() {
             @Override
             public void onChanged(List<NotesVo> notesVos) {
@@ -55,29 +58,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityNavig
         });
         mainActivityViewModel.setNavigator(this);
         mainBinding.setViewModel(mainActivityViewModel);
-        mainActivityViewModel.hideFab(mainBinding.notesView,mainBinding.addNoteBtn);
-
-        ItemTouchHelper itemTouchHelper  = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP|ItemTouchHelper.DOWN,0) {
+        mainActivityViewModel.hideFab(mainBinding.notesView, mainBinding.addNoteBtn);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
-              NotesVo note1 = upDatedList.get(dragged.getAdapterPosition()),note2 = upDatedList.get(target.getAdapterPosition());
-                Collections.swap(upDatedList,dragged.getAdapterPosition(),target.getAdapterPosition());
-                adapter.notifyItemMoved(dragged.getAdapterPosition(),target.getAdapterPosition());
-                int tempId = note1.getNoteID();
-                note1.setNoteID(note2.getNoteID());
-                note2.setNoteID(tempId);
-                mainActivityViewModel.updateNote(note1);
-                mainActivityViewModel.updateNote(note2);
+                NotesVo note1 = upDatedList.get(dragged.getAdapterPosition()), note2= upDatedList.get(target.getAdapterPosition());
+                int id1 = note1.getNoteID(),id2= note2.getNoteID();
+                intial = dragged.getAdapterPosition();
+                last = target.getAdapterPosition();
+                note1.setNoteID(id2);
+                note2.setNoteID(id1);
+                if(!tempList.contains(note1))tempList.add(note1);
+                if(!tempList.contains(note2))tempList.add(note2);
+                Collections.swap(upDatedList, dragged.getAdapterPosition(), target.getAdapterPosition());
+                adapter.notifyItemMoved(dragged.getAdapterPosition(), target.getAdapterPosition());
                 return true;
             }
 
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { }
+
+            @Override
+            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                Log.d("Test"," moved from "+ intial+" to "+last);
+               if(!tempList.isEmpty())mainActivityViewModel.updateMultipleNotes(upDatedList);
 
             }
         });
         itemTouchHelper.attachToRecyclerView(mainBinding.notesView);
-
 
     }
 
@@ -86,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityNavig
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mainActivityViewModel.onActivityResult(requestCode,resultCode,data);
+        mainActivityViewModel.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -94,8 +103,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityNavig
         Intent addNoteIntent = new Intent(MainActivity.this, AddNoteActivity.class);
         startActivityForResult(addNoteIntent, IntentRequestCodes.NEW_NOTE_ACTIVITY_REQUEST);
     }
-
-
-
 
 }

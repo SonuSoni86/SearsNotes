@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import static android.app.Activity.RESULT_OK;
 
+@SuppressWarnings("ALL")
 public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> {
 
     private String TAG = this.getClass().getSimpleName();
@@ -46,13 +47,10 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
         return listOfNotes;
     }
 
-    public void updateNote(NotesVo note) {
-        new UpdateNoteAsyncTask(notesDao).execute(note);
-    }
-
     private void addNote(NotesVo note) {
         new AddNoteAsyncTask(notesDao).execute(note);
     }
+    public void updateMultipleNotes(List<NotesVo> notes){new UpdateMultipleNotesAsyncTask(notesDao).execute(notes);}
 
     public void hideFab(RecyclerView notesView, final FloatingActionButton addNoteBtn) {
         notesView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -138,5 +136,21 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityNavigator> 
 
     public void addNoteClicked() {
         getNavigator().addNoteClicked();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class UpdateMultipleNotesAsyncTask  extends AsyncTask<List<NotesVo>,Void,Void>{
+        NotesDao notesDao;
+
+        UpdateMultipleNotesAsyncTask(NotesDao notesDao) {
+            this.notesDao = notesDao;
+        }
+
+
+        @Override
+        protected Void doInBackground(List<NotesVo>... lists) {
+            notesDao.updateMultipleNotes(lists[0]);
+            return null;
+        }
     }
 }

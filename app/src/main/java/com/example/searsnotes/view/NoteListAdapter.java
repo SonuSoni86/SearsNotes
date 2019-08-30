@@ -79,5 +79,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
         public View getView() {
             return rowOfNotesBinding.getRoot();
         }
+
     }
+
 }
