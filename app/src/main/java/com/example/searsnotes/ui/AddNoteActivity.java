@@ -72,7 +72,13 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteActivit
         viewModel = ViewModelProviders.of(this, providerFactory).get(AddNoteActivityViewModel.class);
         viewModel.setNavigator(this);
         addNoteBinding.setViewModel(viewModel);
-        reminderTim = ""+calendar.get(Calendar.HOUR)+":"+ calendar.get(Calendar.MINUTE)+" "+(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM");
+
+        int hour = calendar.get(Calendar.AM_PM)==0 ? calendar.get(Calendar.HOUR):calendar.get(Calendar.HOUR)+12;
+        if(calendar.get(Calendar.AM_PM)!=0 && hour>12){
+            reminderTim = ""+hour+":"+ calendar.get(Calendar.MINUTE);
+        }
+        else
+            reminderTim = ""+hour+":"+ calendar.get(Calendar.MINUTE)+" "+(calendar.get(Calendar.AM_PM)==0 ? "AM":"PM");
         addNoteBinding.reminderTime.setText(reminderTim);
         String reminderDat = ""+ calendar.get(Calendar.DATE)+"-"+ calendar.get(Calendar.MONTH) +"-"+ calendar.get(Calendar.YEAR);
         addNoteBinding.reminderDate.setText(reminderDat);

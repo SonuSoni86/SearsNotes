@@ -2,7 +2,6 @@ package com.example.searsnotes.widgets;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -24,14 +23,11 @@ public class WidgetService extends RemoteViewsService {
     class WidgetItemFactory implements RemoteViewsFactory{
 
         private Context context;
-       // private int appWidgetId;
-        private List<NotesVo> notesVoList;
         private NotesDao notesDao;
+        private List<NotesVo> notesVoList = new ArrayList<>();
 
         WidgetItemFactory(Context context, Intent intent) {
-
             this.context = context;
-           // this.appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
         @Override
@@ -59,12 +55,9 @@ public class WidgetService extends RemoteViewsService {
         @Override
         public RemoteViews getViewAt(int i) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_row_item);
-            NotesVo note = notesVoList.get(i);
+           NotesVo note = notesVoList.get(i);
             views.setTextViewText(R.id.note_title,note.getNoteTitle());
-            views.setTextViewText(R.id.note_time,note.getNoteTime());
-            if(!note.getNoteImage().equals("default")){
-                views.setImageViewUri(R.id.note_image, Uri.parse(note.getNoteImage()));
-            }
+           views.setTextViewText(R.id.note_time,note.getNoteTime());
             return views;
         }
 

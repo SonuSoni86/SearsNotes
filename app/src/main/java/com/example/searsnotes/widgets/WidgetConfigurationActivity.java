@@ -45,7 +45,13 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
         RemoteViews views = new RemoteViews(this.getPackageName(),R.layout.widget_layout);
         views.setRemoteAdapter(R.id.listView,serviceIntent);
+        views.setEmptyView(R.id.listView,R.id.widget_empty_view);
 
         manager.updateAppWidget(appWidgetId,views);
+
+        Intent resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+        setResult(RESULT_OK,resultValue);
+        finish();
     }
 }
