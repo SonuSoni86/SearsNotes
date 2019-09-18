@@ -13,6 +13,8 @@ import com.example.searsnotes.model.NotesVo;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.searsnotes.widgets.WidgetProvider.EXTRA_ITEM_POSITION;
+
 public class WidgetService extends RemoteViewsService {
 
     @Override
@@ -58,6 +60,11 @@ public class WidgetService extends RemoteViewsService {
            NotesVo note = notesVoList.get(i);
             views.setTextViewText(R.id.note_title,note.getNoteTitle());
            views.setTextViewText(R.id.note_time,note.getNoteTime());
+
+           Intent fillIntent = new Intent();
+           fillIntent.putExtra(EXTRA_ITEM_POSITION,note.getNoteID());
+           views.setOnClickFillInIntent(R.id.widgetRowItem,fillIntent);
+
             return views;
         }
 

@@ -3,6 +3,7 @@ package com.example.searsnotes.widgets;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import com.example.searsnotes.R;
+
+import static com.example.searsnotes.widgets.WidgetProvider.ACTION_VIEW;
 
 public class WidgetConfigurationActivity extends AppCompatActivity {
 
@@ -43,9 +46,14 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
+        Intent clickIntent = new Intent(this,WidgetProvider.class);
+        clickIntent.setAction(ACTION_VIEW);
+        PendingIntent pendingClickIntent= PendingIntent.getBroadcast(this,0,clickIntent,0);
+
         RemoteViews views = new RemoteViews(this.getPackageName(),R.layout.widget_layout);
         views.setRemoteAdapter(R.id.listView,serviceIntent);
         views.setEmptyView(R.id.listView,R.id.widget_empty_view);
+        views.setPendingIntentTemplate(R.id.listView,pendingClickIntent);
 
         manager.updateAppWidget(appWidgetId,views);
 

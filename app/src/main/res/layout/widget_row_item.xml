@@ -7,6 +7,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginRight="8dp"
     android:background="@android:color/white"
+    android:id="@+id/widgetRowItem"
     android:orientation="vertical"
     android:padding="8dp">
 
